@@ -13,4 +13,4 @@ class Weight(models.Model):
     return self.value
 
   class Meta:
-    app_label = 'uamuma_happy_app'
+    app_label = 'umauma_happy_app'
