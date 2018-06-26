@@ -1,5 +1,6 @@
 *.pyc
 *.pyo
 .env
+.idea
 __pycache__
 db.sqlite3
