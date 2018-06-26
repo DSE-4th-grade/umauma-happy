@@ -3,8 +3,9 @@ from umauma_happy_app.models.ground_condition import GroundCondition
 from umauma_happy_app.models.course import Course
 from umauma_happy_app.models.distance import Distance
 
+
 class Race(models.Model):
-  date = models.DateTimeField()
+  date = models.DateField()   # xxxx-xx-xx
   number = models.IntegerField()
   name = models.CharField(max_length=100)
   arena = models.CharField(max_length=50)
