@@ -8,7 +8,7 @@ class Favorite(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self
+    return self.user.name + ':' + self.factor_id_array
 
   class Meta:
     app_label = 'umauma_happy_app'
