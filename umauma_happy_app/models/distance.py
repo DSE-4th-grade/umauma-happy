@@ -6,7 +6,7 @@ class Distance(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self.value
+    return str(self.value)
 
   class Meta:
     app_label = 'umauma_happy_app'

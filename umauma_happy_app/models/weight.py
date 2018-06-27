@@ -5,12 +5,12 @@ from umauma_happy_app.models.factor import Factor
 class Weight(models.Model):
   history = models.ForeignKey(History, on_delete=models.PROTECT)
   factor = models.ForeignKey(Factor, on_delete=models.PROTECT)
-  value = models.DecimalField()
+  value = models.DecimalField(decimal_places=2, max_digits=5)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self.value
+    return str(self.value)
 
   class Meta:
-    app_label = 'uamuma_happy_app'
+    app_label = 'umauma_happy_app'

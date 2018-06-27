@@ -9,7 +9,7 @@ class History(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self
+    return self.user.name + ':' + str(self.created_at)
 
   class Meta:
     app_label = 'umauma_happy_app'

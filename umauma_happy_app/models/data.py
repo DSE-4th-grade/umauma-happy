@@ -16,7 +16,6 @@ class Data(models.Model):
   stable = models.ForeignKey(Stable, on_delete=models.PROTECT)
   trainer = models.ForeignKey(Trainer, on_delete=models.PROTECT)
   distance_suitability = models.ForeignKey(DistanceSuitability, on_delete=models.PROTECT)
-  past_achievement = models.CharField(max_length=100)
   horse_order = models.IntegerField()
   leg_quality = models.ForeignKey(LegQuality, on_delete=models.PROTECT)
   odds = models.DecimalField(decimal_places=1, max_digits=5)
@@ -26,7 +25,7 @@ class Data(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self
+    return self.horse.name + str(self.race.date)
 
   class Meta:
     app_label = 'umauma_happy_app'
