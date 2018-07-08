@@ -1,0 +1,119 @@
+[
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 1,
+    "fields": {
+      "name": "騎手",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 2,
+    "fields": {
+      "name": "距離適性",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 3,
+    "fields": {
+      "name": "前走成績",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 4,
+    "fields": {
+      "name": "枠番",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 5,
+    "fields": {
+      "name": "脚質",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 6,
+    "fields": {
+      "name": "パドック",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 7,
+    "fields": {
+      "name": "馬体重",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 8,
+    "fields": {
+      "name": "斤量",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 9,
+    "fields": {
+      "name": "オッズ",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 10,
+    "fields": {
+      "name": "厩舎",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 11,
+    "fields": {
+      "name": "血統",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 12,
+    "fields": {
+      "name": "競馬場",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.factor",
+    "pk": 13,
+    "fields": {
+      "name": "調教師",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  }
+]

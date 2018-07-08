@@ -1,0 +1,38 @@
+[
+  {
+    "model": "umauma_happy_app.legquality",
+    "pk": 1,
+    "fields": {
+      "value": "逃げ",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.legquality",
+    "pk": 2,
+    "fields": {
+      "value": "先行",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.legquality",
+    "pk": 3,
+    "fields": {
+      "value": "差し",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.legquality",
+    "pk": 4,
+    "fields": {
+      "value": "追い込み",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  }
+]

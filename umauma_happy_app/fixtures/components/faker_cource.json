@@ -1,0 +1,26 @@
+[
+  {
+    "model": "umauma_happy_app.cource",
+    "fields": {
+      "value": "芝",
+      "created_at": "2018-07-08 17:47:03",
+      "updated_at": "2018-07-08 17:47:03"
+    }
+  },
+  {
+    "model": "umauma_happy_app.cource",
+    "fields": {
+      "value": "ダート",
+      "created_at": "2018-07-08 17:47:03",
+      "updated_at": "2018-07-08 17:47:03"
+    }
+  },
+  {
+    "model": "umauma_happy_app.cource",
+    "fields": {
+      "value": "障害",
+      "created_at": "2018-07-08 17:47:03",
+      "updated_at": "2018-07-08 17:47:03"
+    }
+  }
+]

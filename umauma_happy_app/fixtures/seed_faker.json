@@ -1,0 +1,198 @@
+[
+  {
+    "model": "umauma_happy_app.user",
+    "fields": {
+      "system_id": "zkiriyama",
+      "name": "田中 修平",
+      "created_at": "2013-09-21 16:00:02",
+      "updated_at": "2013-09-21 16:00:02"
+    }
+  },
+  {
+    "model": "umauma_happy_app.user",
+    "fields": {
+      "system_id": "nakatsugawakyosuke",
+      "name": "井高 花子",
+      "created_at": "2011-06-16 10:18:07",
+      "updated_at": "2011-06-16 10:18:07"
+    }
+  },
+  {
+    "model": "umauma_happy_app.user",
+    "fields": {
+      "system_id": "tomoyayoshida",
+      "name": "廣川 加奈",
+      "created_at": "2018-03-16 12:28:06",
+      "updated_at": "2018-03-16 12:28:06"
+    }
+  },
+  {
+    "model": "umauma_happy_app.user",
+    "fields": {
+      "system_id": "naokihirokawa",
+      "name": "松本 陽子",
+      "created_at": "2017-03-22 19:47:25",
+      "updated_at": "2017-03-22 19:47:25"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 8,
+      "name": "青田記念",
+      "arena": "手岡競馬場",
+      "departure_time": "2016-12-29 12:39:00",
+      "head_count": 10,
+      "course_id": 1,
+      "distance_id": 2,
+      "ground_condition_id": 1,
+      "date": "2019-06-18",
+      "created_at": "2016-08-14 16:28:13",
+      "updated_at": "2016-08-14 16:28:13"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 2,
+      "name": "山本記念",
+      "arena": "鳥越競馬場",
+      "departure_time": "2013-01-11 18:05:03",
+      "head_count": 10,
+      "course_id": 1,
+      "distance_id": 2,
+      "ground_condition_id": 1,
+      "date": "2015-12-29",
+      "created_at": "2017-07-12 16:53:54",
+      "updated_at": "2017-07-12 16:53:54"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 8,
+      "name": "杉山記念",
+      "arena": "台場競馬場",
+      "departure_time": "2015-07-14 22:18:42",
+      "head_count": 12,
+      "course_id": 3,
+      "distance_id": 3,
+      "ground_condition_id": 1,
+      "date": "2013-12-25",
+      "created_at": "2010-01-24 23:27:52",
+      "updated_at": "2010-01-24 23:27:52"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 3,
+      "name": "佐々木記念",
+      "arena": "羽折町競馬場",
+      "departure_time": "2014-10-04 15:39:02",
+      "head_count": 13,
+      "course_id": 3,
+      "distance_id": 6,
+      "ground_condition_id": 1,
+      "date": "2010-02-14",
+      "created_at": "2012-11-14 14:56:01",
+      "updated_at": "2012-11-14 14:56:01"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 12,
+      "name": "渡辺記念",
+      "arena": "柿木沢競馬場",
+      "departure_time": "2015-03-24 03:45:05",
+      "head_count": 11,
+      "course_id": 2,
+      "distance_id": 5,
+      "ground_condition_id": 1,
+      "date": "2011-05-03",
+      "created_at": "2012-05-01 03:01:29",
+      "updated_at": "2012-05-01 03:01:29"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 2,
+      "name": "小林記念",
+      "arena": "権現堂競馬場",
+      "departure_time": "2014-03-10 03:08:47",
+      "head_count": 11,
+      "course_id": 3,
+      "distance_id": 5,
+      "ground_condition_id": 4,
+      "date": "2013-06-02",
+      "created_at": "2014-06-20 09:09:06",
+      "updated_at": "2014-06-20 09:09:06"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 4,
+      "name": "工藤記念",
+      "arena": "脚折町競馬場",
+      "departure_time": "2012-12-01 01:32:08",
+      "head_count": 16,
+      "course_id": 1,
+      "distance_id": 5,
+      "ground_condition_id": 2,
+      "date": "2019-08-02",
+      "created_at": "2010-07-14 23:56:17",
+      "updated_at": "2010-07-14 23:56:17"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 2,
+      "name": "渚記念",
+      "arena": "筑土八幡町競馬場",
+      "departure_time": "2016-01-28 05:04:24",
+      "head_count": 14,
+      "course_id": 3,
+      "distance_id": 3,
+      "ground_condition_id": 2,
+      "date": "2017-11-05",
+      "created_at": "2012-12-13 07:31:56",
+      "updated_at": "2012-12-13 07:31:56"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 4,
+      "name": "江古田記念",
+      "arena": "押上競馬場",
+      "departure_time": "2010-01-25 18:57:04",
+      "head_count": 15,
+      "course_id": 1,
+      "distance_id": 1,
+      "ground_condition_id": 2,
+      "date": "2014-05-06",
+      "created_at": "2017-03-31 08:01:40",
+      "updated_at": "2017-03-31 08:01:40"
+    }
+  },
+  {
+    "model": "umauma_happy_app.race",
+    "fields": {
+      "number": 10,
+      "name": "小泉記念",
+      "arena": "細竹競馬場",
+      "departure_time": "2015-02-12 23:20:48",
+      "head_count": 15,
+      "course_id": 2,
+      "distance_id": 2,
+      "ground_condition_id": 4,
+      "date": "2010-07-27",
+      "created_at": "2014-05-12 08:56:46",
+      "updated_at": "2014-05-12 08:56:46"
+    }
+  }
+]

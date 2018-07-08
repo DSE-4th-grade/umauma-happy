@@ -1,0 +1,38 @@
+[
+  {
+    "model": "umauma_happy_app.groundcondition",
+    "pk": 1,
+    "fields": {
+      "value": "良",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.groundcondition",
+    "pk": 2,
+    "fields": {
+      "value": "稍重",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.groundcondition",
+    "pk": 3,
+    "fields": {
+      "value": "重",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  },
+  {
+    "model": "umauma_happy_app.groundcondition",
+    "pk": 4,
+    "fields": {
+      "value": "不良",
+      "created_at": "2018-07-08 19:59:48",
+      "updated_at": "2018-07-08 19:59:48"
+    }
+  }
+]
