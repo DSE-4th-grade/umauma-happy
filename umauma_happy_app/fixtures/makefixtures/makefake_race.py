@@ -11,9 +11,9 @@ def race():
     for i in range(10):  # 10競馬場分作成
         datetime_race = fake.date_time_this_decade(before_now=True, after_now=True, tzinfo=None)  # レースのdeparture_time
         date_race = fake.date_time_this_decade(before_now=True, after_now=True, tzinfo=None).strftime("%Y-%m-%d")  # レースのdate
-        datetime_now = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at&updated_at用
+        datetime_now = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         arena = fake.town() + "競馬場"
-        for j in range(12):  # 同じ競馬場で同日に1~12レースを30分刻みで作成
+        for j in range(12):  # 同じ競馬場で同日に12レースを30分刻みで作成
             datetime_race_now = (datetime_race + datetime.timedelta(minutes=j * 30)).strftime("%Y-%m-%d %H:%M:%S")
             fields = cl.OrderedDict()  # 格納するフィールドを定義
             fields["number"] = j + 1
@@ -29,10 +29,11 @@ def race():
             fields["updated_at"] = datetime_now
             data = cl.OrderedDict()
             data["model"] = "umauma_happy_app.race"  # 対象のmodelを設定
+            data["pk"] = i * 12 + j + 1  # PrimaryKeyを設定
             data["fields"] = fields  # 格納するフィールドを設定
             ys.append(data)  # json書き込み用配列に追加
     fw = open('umauma_happy_app/fixtures/components/faker_race.json', 'w')
-    json.dump(ys, fw, indent=2, ensure_ascii=False)
+    json.dump(ys, fw, indent=2, ensure_ascii=False)  # 中間fixtureファイルを出力
 
 
 if __name__ == '__main__':
