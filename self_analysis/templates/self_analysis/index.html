@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+
+    {% if user_list %}
+    <ul>
+        {% for user in user_list %}
+        <li><a href="{% url 'self_analysis:detail' user.id %}">{{ user.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No user.</p>
+    {% endif %}
+
+</head>
+<body>
+
+</body>
+</html>

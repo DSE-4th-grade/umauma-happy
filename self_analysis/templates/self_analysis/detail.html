@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <p1>
+        {% for history in history_list %}
+            <li>購入時刻: {{ history.created_at }}
+                {% if history.data.rank <= 3 %}
+                    ○着内
+                {% else %}
+                    ×着外
+                {% endif %}
+            </li>
+        {% endfor %}
+    </p1>
+<br>
+    <p2>
+       要素別的中ランキング[{{ user.name }}]
+        {% for weight in weight_list %}
+            <li>{{ weight.factor.name }}: {{ weight.value }}</li>
+        {% endfor %}
+    </p2>
+
+</head>
+</html>
