@@ -17,14 +17,14 @@ def data():
     for i in range(FakeNumber.total_races):
         date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         thistime_jockeys = random.sample(all_jockey, FakeNumber.head_count)  # レース毎のジョッキーリストを作成
-        shuffled_int1 = list(range(0, FakeNumber.head_count - 1))  # オッズ選択用にintリストを作成
+        shuffled_int1 = list(range(0, FakeNumber.head_count))  # オッズ選択用にintリストを作成
         random.shuffle(shuffled_int1)  # オッズ選択用にintリストをシャッフル
-        shuffled_int2 = list(range(0, FakeNumber.head_count - 1))  # ランク選択用にintリストを作成
+        shuffled_int2 = list(range(0, FakeNumber.head_count))  # ランク選択用にintリストを作成
         random.shuffle(shuffled_int2)  # ランク選択用にintリストをシャッフル
         if i % FakeNumber.total_race == 0:  # その日の全レースが終わった時に馬リストをリセット
             today_horses = random.sample(all_horse, FakeNumber.head_count * FakeNumber.total_race)  # その日行われるレース分の馬リストを作成
             horse_count = 0  # today_horsesリストのidを初期化
-        for j in range(FakeNumber.head_count - 1):
+        for j in range(FakeNumber.head_count):
             fields = cl.OrderedDict()  # 格納するフィールドを定義
             fields["horse_id"] = today_horses[horse_count]  # 上で作成した馬リストから重複が起きない様に選択
             fields["race_id"] = i + 1
