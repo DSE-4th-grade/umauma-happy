@@ -3,12 +3,13 @@ import json
 import random
 
 from faker import Factory
+from .makefake__public import FakeNumber  # 固定数部分をimport
 
 
 def horse():
     fake = Factory.create('ja_JP')
     ys = []  # json書き込み用配列に追加
-    for i in range(20):
+    for i in range(FakeNumber.total_horse):
         date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         link_array = fake.profile(fields='website')  # fakerからリンクを辞書として取得
         link = link_array["website"]  # 辞書からリストへ
