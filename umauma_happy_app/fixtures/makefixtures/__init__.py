@@ -1,4 +1,5 @@
 from .makefake_cource import cource
+from .makefake_data import data
 from .makefake_distance import distance
 from .makefake_distancesuitability import distancesuitability
 from .makefake_factor import factor
@@ -8,4 +9,5 @@ from .makefake_jockey import jockey
 from .makefake_legquality import legquality
 from .makefake_race import race
 from .makefake_stable import stable
+from .makefake_trainer import trainer
 from .makefake_user import user
