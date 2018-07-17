@@ -41,7 +41,7 @@ for tag in link:#aタグのいらない部分を取る
 
 
 for i in range(0,1):#リンクを使える形に直すlen(list1)
-    racelink.insert(0,"http://race.netkeiba.com"+list1[i])
+    racelink.append("http://race.netkeiba.com"+list1[i])
 
 for i in range(0,len(racelink)):#レースごと
     data_sex = []
@@ -98,7 +98,6 @@ for i in range(0,len(racelink)):#レースごと
 
 
 
-
     # horselink = bs4.BeautifulSoup(urllib.request.urlopen(racelink[i]).read())
    # horselist.insert()
 
@@ -107,4 +106,4 @@ for i in range(0,len(racelink)):#レースごと
 conn.commit()
 
 def index(request):
-    return HttpResponse(str(data_sex)+str(data_handicap)+str(data_odds)+str(data_popularity)+str(data_past_achievement)+str(race_date)+str(race_number)+str(race_name)+str(race_arena)+str(race_head_count)+str(groundcondition_value)+str(course_value)+str(distance_value)+str(jockey_name)+str(jockey_link)+str(trainer_name)+str(horse_name)+str(horse_birth)+str(horse_link))
+    return HttpResponse(str(list1)+str(data_sex)+str(data_handicap)+str(data_odds)+str(data_popularity)+str(data_past_achievement)+str(race_date)+str(race_number)+str(race_name)+str(race_arena)+str(race_head_count)+str(groundcondition_value)+str(course_value)+str(distance_value)+str(jockey_name)+str(jockey_link)+str(trainer_name)+str(horse_name)+str(horse_birth)+str(horse_link))
