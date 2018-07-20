@@ -4,6 +4,7 @@ from faker import Factory
 import random
 import datetime
 from .makefake__public import FakeNumber  # 固定数部分をimport
+from .makefake__public import StaticValue
 
 def race():
     fake = Factory.create('ja_JP')
@@ -22,15 +23,15 @@ def race():
             fields["arena"] = arena
             fields["departure_time"] = datetime_race_now
             fields["head_count"] = FakeNumber.head_count  # dataフィールドを作成する際に使用するため固定
-            fields["course_id"] = random.randint(1, 3)  # 芝,ダート,障害のどれかを選択
-            fields["distance_id"] = random.randint(1, 6)  # 距離を選択(intに変更？)
-            fields["ground_condition_id"] = random.randint(1, 4)  # 馬場状態を選択
+            fields["course_id"] = random.randint(1, len(StaticValue.course_value))  # 芝,ダート,障害のどれかを選択
+            fields["distance_id"] = random.randint(1, len(StaticValue.distance_value))  # 距離を選択(intに変更？)
+            fields["ground_condition_id"] = random.randint(1, len(StaticValue.ground_condition_value))  # 馬場状態を選択
             fields["date"] = date_race
             fields["created_at"] = datetime_now
             fields["updated_at"] = datetime_now
             data = cl.OrderedDict()
             data["model"] = "umauma_happy_app.race"  # 対象のmodelを設定
-            data["pk"] = i * 12 + j + 1  # PrimaryKeyを設定
+            data["pk"] = i * FakeNumber.total_race + j + 1  # PrimaryKeyを設定
             data["fields"] = fields  # 格納するフィールドを設定
             ys.append(data)  # json書き込み用配列に追加
 

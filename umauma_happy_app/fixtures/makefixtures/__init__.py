@@ -1,4 +1,4 @@
-from .makefake_cource import cource
+from .makefake_course import course
 from .makefake_data import data
 from .makefake_distance import distance
 from .makefake_distancesuitability import distancesuitability

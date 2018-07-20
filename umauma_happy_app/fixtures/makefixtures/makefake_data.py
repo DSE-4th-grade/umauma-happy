@@ -4,6 +4,7 @@ import random
 
 from faker import Factory
 from .makefake__public import FakeNumber  # 固定数部分をimport
+from .makefake__public import StaticValue
 
 def data():
     fake = Factory.create('ja_JP')
@@ -33,9 +34,9 @@ def data():
             fields["handicap"] = random.randint(50, 60)
             fields["stable_id"] = random.randint(1, FakeNumber.total_stable)
             fields["trainer_id"] = random.randint(1, FakeNumber.total_trainer)
-            fields["distance_suitability"] = random.randint(1, 5)
+            fields["distance_suitability"] = random.randint(1, len(StaticValue.distance_suitability_value))
             fields["horse_order"] = j + 1
-            fields["leg_quality_id"] = random.randint(1, 4)
+            fields["leg_quality_id"] = random.randint(1, len(StaticValue.leg_quality_value))
             fields["odds"] = odds_sample[shuffled_int1[j]]  # odd_sampleからランダムの要素を選択
             fields["popularity"] = shuffled_int1[j] + 1  # odds_sampleで選んだid
             fields["rank"] = shuffled_int2[j] + 1  # 上で作成した重複のないランダムなinteger

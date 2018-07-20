@@ -6,7 +6,7 @@ if __name__ == '__main__':
     # 下記のクラスでは追加ライブラリは使用していない
     # ここでできたfixtureファイルをDBに反映させるには'python manage.py loaddata seed_default'を実行する
     # PrimaryKeyを設定しているので、何度loaddataを実行しても重複は起こさない(要素数を変えた場合を除く)
-    makefixtures.cource()  # 各modelのfixtureファイルを作成
+    makefixtures.course()  # 各modelのfixtureファイルを作成
     makefixtures.distance()
     makefixtures.distancesuitability()
     makefixtures.factor()

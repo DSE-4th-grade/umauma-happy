@@ -21,3 +21,11 @@ class FakeNumber:
     purchase_probability_1_encode = purchase_probability_0 + purchase_probability_1
     # userがレースに対して2枚以下馬券を購入する確率
     purchase_probability_2_encode = purchase_probability_0 + purchase_probability_1 + purchase_probability_2
+
+class StaticValue:
+    course_value = ["芝", "ダート", "障害"]
+    distance_value = [1000, 1200, 1400, 1600, 1800, 2000]
+    ground_condition_value = ["良", "稍重", "重", "不良"]
+    distance_suitability_value = ["スプリント", "マイル", "中距離", "中長距離", "長距離"]
+    leg_quality_value = ["逃げ", "先行", "差し", "追い込み"]
+    factor_value = ["騎手", "距離適性", "前走成績", "枠番", "脚質", "パドック", "馬体重", "斤量", "オッズ", "厩舎", "血統", "競馬場", "調教師"]

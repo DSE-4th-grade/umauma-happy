@@ -1,8 +1,9 @@
 import json
 import collections as cl
 from faker import Factory
-from .makefake__public import FakeNumber  # 固定数部分をimport
 import random
+from .makefake__public import FakeNumber  # 固定数部分をimport
+from .makefake__public import StaticValue
 
 def history_weight():
     fake = Factory.create('ja_JP')
@@ -35,7 +36,7 @@ def history_weight():
                 data["fields"] = fields  # 格納するフィールドを設定
                 ys.append(data)  # json書き込み用配列に追加
 
-                shuffled_int2 = list(range(1, 13 + 1))  # 要素選択用にintリストを作成
+                shuffled_int2 = list(range(1, len(StaticValue.factor_value) + 1))  # 要素選択用にintリストを作成
                 random.shuffle(shuffled_int2)  # 要素選択用にintリストをシャッフル
                 # 各購入馬に対してファクター項目数をランダムで決める
                 random_factor_num = random.randint(FakeNumber.purchase_factor_num_l, FakeNumber.purchase_factor_num_g)
