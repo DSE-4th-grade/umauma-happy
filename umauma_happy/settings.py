@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'umauma_happy_app'
+    'umauma_happy_app',
+    'scraping_module'
 ]
 
 MIDDLEWARE = [
