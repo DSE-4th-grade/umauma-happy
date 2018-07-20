@@ -4,6 +4,7 @@ from .makefake_distance import distance
 from .makefake_distancesuitability import distancesuitability
 from .makefake_factor import factor
 from .makefake_groundcondition import groundcondition
+from .makefake_history_weight import history_weight
 from .makefake_horse import horse
 from .makefake_jockey import jockey
 from .makefake_legquality import legquality

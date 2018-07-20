@@ -6,7 +6,7 @@ from .makefake__public import FakeNumber  # 固定数部分をimport
 def user():
     fake = Factory.create('ja_JP')
     ys = []  # json書き込み用配列に追加
-    for i in range(20):
+    for i in range(FakeNumber.total_user):
         date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         fields = cl.OrderedDict()  # 格納するフィールドを定義
         fields["system_id"] = fake.user_name()

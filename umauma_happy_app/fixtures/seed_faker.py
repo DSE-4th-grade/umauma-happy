@@ -8,6 +8,7 @@ if __name__ == '__main__':
     # PrimaryKeyを設定しているので、何度loaddataを実行しても重複は起こさない(作成要素数を変えた場合を除く)
     makefixtures.horse()  # 各modelのfixtureファイルを作成
     makefixtures.data()
+    makefixtures.history_weight()
     makefixtures.jockey()
     makefixtures.race()
     makefixtures.stable()
@@ -17,6 +18,7 @@ if __name__ == '__main__':
     component_data = []  # 各fixtureファイルのjsonを格納するためのリスト
     master_data = []  # 各fixtureファイルを結合したデータを格納するためのリスト
     src = ["umauma_happy_app/fixtures/components/faker_data.json",
+           "umauma_happy_app/fixtures/components/faker_history_weight.json",
            "umauma_happy_app/fixtures/components/faker_horse.json",
            "umauma_happy_app/fixtures/components/faker_jockey.json",
            "umauma_happy_app/fixtures/components/faker_race.json",
