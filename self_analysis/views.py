@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from umauma_happy_app.models import *
 from django.http import HttpResponse
+import itertools
+
 
 # Create your views here.
 
@@ -11,61 +13,85 @@ def index(request):
     return render(request, 'self_analysis/index.html', context)
 
 
-def detail(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
+# 指定したユーザの的中購入履歴をリストで返す
+def hit_history(user):
     history_list_all = list(History.objects.all())
-    factor_list_all = list(Factor.objects.all())
 
     # 的中した購入履歴のみを抽出
-    history_list = filter(lambda history: history.user == user and history.data.rank <= 3, history_list_all)
+    # ここでの的中判定ロジックは単純に3着以内とする
+    hit_history_list = filter(lambda history: history.user == user and history.data.rank <= 3, history_list_all)
+
+    return hit_history_list
+
+
+# 指定したユーザの的中購入履歴に紐づくすべての重みリストを返す [ [(Weight, Weight), (Weight, Weight, Weight), ...] ]
+def get_filtered_wight_list(user):
+    hit_history_list = hit_history(user)
 
     # それぞれの的中購入履歴に対応する重みリストを取り出す
-    # それぞれの的中購入履歴に関する要素の組み合わせパターンを抽出
-    filtered_weight_list = []   # 的中購入履歴すべてに対する重みリスト ( [ [weight], [weight] ] )
-    hit_pattern_list = []
-    for history in history_list:
-        filtered_weight = get_list_or_404(Weight, history=history)
-        filtered_weight_list.extend(filtered_weight)
-        pattern = []    # 1つの的中購入履歴に関する要素の組み合わせパターン ([騎手, 脚質])
-        for weight in filtered_weight:
-            pattern.extend(list(filter(lambda factor: factor.name == weight.factor.name, factor_list_all)))
-        hit_pattern_list.append(pattern)    # 的中パターンをリスト化　([ [騎手, 脚質], [競馬場, 調教師], ・・・ ])
+    history_weight_list = []
+    for history in hit_history_list:
+        history_weight = tuple(get_list_or_404(Weight, history=history))
+        history_weight_list.append(history_weight)
 
-    #
-    hit_factor_pattern_rank_list = []
-    hit_rank_list = []
+    return history_weight_list
 
+
+# 指定ユーザの要素ごとの的中回数をリスト形式で返す [ (factor1, 9), (factor2, 7), ... ]
+def hit_factor(user):
+    factor_list_all = list(Factor.objects.all())
+    history_weight_list = get_filtered_wight_list(user)
+
+    hit_factor_rank = {}
     # 要素別的中ランキング(重みは用いない、的中回数のみ)の作成
     for factor in factor_list_all:
         hit_factor_num = 0
-        for w in filtered_weight_list:
-            if w.factor == factor:
-                hit_factor_num += 1
-        hit_rank_list.append([hit_factor_num, factor])
+        for history_weight in history_weight_list:
+            for weight in history_weight:
+                if weight.factor == factor:
+                    hit_factor_num += 1
+        hit_factor_rank[factor] = hit_factor_num
 
-    # 要素の組み合わせごとの的中ランキング(重みは用いない、 的中回数のみ)の作成
-    for factor in factor_list_all:
-        factor_list_all.remove(factor)
-        for pair in factor_list_all:
-            factor_set = set(list([factor, pair]))
-            pattern_matched_num = 0
-            for pattern in hit_pattern_list:
-                if len(set(set(pattern) & factor_set)) == 2:
+    # itemsはタプル型オブジェクトを要素とするリストを返す
+    hit_factor_rank = list(hit_factor_rank.items())
+    hit_factor_rank.sort(key=lambda x: -x[1])
+    return hit_factor_rank
+
+
+# 指定ユーザの要素の組み合わせごとの的中回数を二次元配列で返す [ [5, <factor1,factor2>], [3, <factor6, factor8>], ...]
+def hit_factor_combinations(user):
+    combination_num = 2     # 組み合わせ要素数。まずは2つの要素の組み合わせ
+    factor_list_all = list(Factor.objects.all())
+    factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
+    history_weight_list = get_filtered_wight_list(user)
+
+    hit_factor_pattern_rank = {}
+    for factor_combination in factor_combinations_all:  # すべての要素の組み合わせに対して
+        pattern_matched_num = 0
+        for history_weight in history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
+            history_factor = []
+            for weight in history_weight:   # history_weightから要素リストを作成
+                history_factor.append(weight.factor)
+            # 1つの的中購入履歴に関して要素の組み合わせを求め,それがfactor_combinationと一致するかどうかを判定
+            history_factor_combination_list = list(itertools.combinations(history_factor, combination_num))
+            for history_factor_combination in history_factor_combination_list:
+                if len(set(history_factor_combination) & set(factor_combination)) == combination_num:
                     pattern_matched_num += 1
-            if pattern_matched_num > 0:
-                hit_factor_pattern_list = [pattern_matched_num, factor_set]
-                hit_factor_pattern_rank_list.append(hit_factor_pattern_list)
+        # 的中回数が1回以上あった組み合わせを格納していく
+        if pattern_matched_num > 0:
+            hit_factor_pattern_rank[factor_combination] = pattern_matched_num   # 要素パターンをキー,的中回数を値として追加していく
 
-    # 的中回数が多い順にソートする
-    hit_rank_list.sort(key=lambda x: -x[0])
-    hit_factor_pattern_rank_list.sort(key=lambda x: -x[0])
+    # hit_factor内と同様にソートしてreturn
+    hit_factor_pattern_rank = list(hit_factor_pattern_rank.items())
+    hit_factor_pattern_rank.sort(key=lambda x: -x[1])
+    return hit_factor_pattern_rank
 
+
+def detail(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
 
     context = {'user': user,
-               'history_list': history_list_all,
-               'weight_list': filtered_weight_list,
-               'hit_rank_list': hit_rank_list,
-               'hit_factor_pattern': hit_factor_pattern_rank_list,}
-
+               'hit_rank_list': hit_factor(user),
+               'hit_factor_pattern': hit_factor_combinations(user), }
 
     return render(request, 'self_analysis/detail.html', context)
