@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'umauma_happy_app',
-    'social_analysis'
+    'self_analysis',
+    'social_analysis',
 ]
 
 MIDDLEWARE = [
