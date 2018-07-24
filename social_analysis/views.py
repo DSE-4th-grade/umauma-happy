@@ -16,7 +16,7 @@ def index(request, analysis_number=None):
                'analysis_number': analysis_number}
     return render(request, 'social_analysis/index.html', context)
 
-
+# 指定された数だけweightテーブルからデータを返す. 指定しない場合は全件取得.
 def get_weight(number=None):
     if number is not None:
         all_weight = list(Weight.objects.all()[:number])
@@ -24,31 +24,34 @@ def get_weight(number=None):
         all_weight = list(Weight.objects.all())
     return all_weight
 
-
+# 与えられたweightリストに対して,要素の使用回数,的中回数,的中率を辞書で返す
 def count_factor(weight_list):
     factor_list_all = list(Factor.objects.all())
+    pre_time = datetime.datetime.now()  # 経過時間表示用
+    # 結果を格納する辞書を初期化
     factor_counter = {}
-    pretime = datetime.datetime.now()
     for factor in factor_list_all:
         factor_counter[factor] = {}
         factor_counter[factor]['use'] = 0
         factor_counter[factor]['hit'] = 0
+    # 要素別使用回数と的中回数を計算
     print('{0} | {1}件処理します.[開始]'.format(datetime.datetime.now(), len(weight_list)))
     for weight in weight_list:
-        for factor in factor_list_all:
-            if weight.factor == factor:
-                factor_counter[factor]['use'] += 1
-                if judge_hit_or_not(weight):
-                    factor_counter[factor]['hit'] += 1
-                continue
-        if weight.id % 100 == 0:
-            print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
-    print('{0} | {1}件処理しました.処理時間：{2}[完了]'.format(datetime.datetime.now(), len(weight_list), datetime.datetime.now() - pretime))
+        factor_counter[weight.factor]['use'] += 1
+        if judge_hit_or_not(weight):
+            factor_counter[weight.factor]['hit'] += 1
+        # if weight.id % 100 == 0:
+            # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
+    print('{0} | {1}件処理しました.処理時間：{2}[完了]'
+          .format(datetime.datetime.now(), len(weight_list), datetime.datetime.now() - pre_time))
+    # 的中率を計算
     for factor in factor_list_all:
         if factor_counter[factor]['use'] == 0:
             factor_counter[factor]['percentage'] = '{:.3f}'.format(0)
         else:
-            factor_counter[factor]['percentage'] = '{:0=6.3f}'.format((factor_counter[factor]['hit'] / factor_counter[factor]['use']) * 100)
+            factor_counter[factor]['percentage'] \
+                = '{:0=6.3f}'.format((factor_counter[factor]['hit'] / factor_counter[factor]['use']) * 100)
+    # 結果を的中率, 同点なら使用回数順になるように並び替え
     factor_counter = OrderedDict(sorted(factor_counter.items(), key=lambda x: x[1]['use'], reverse=True))
     factor_counter = OrderedDict(sorted(factor_counter.items(), key=lambda x: x[1]['percentage'], reverse=True))
     return factor_counter
