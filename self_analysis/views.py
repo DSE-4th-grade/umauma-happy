@@ -65,26 +65,24 @@ def get_hit_factor_combinations_by_user(user):
     factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
     history_weight_list = get_hit_wight_list_by_user(user)
 
-    hit_factor_pattern_rank = {}
-    for factor_combination in factor_combinations_all:  # すべての要素の組み合わせに対して
-        pattern_matched_num = 0
-        for history_weight in history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
-            history_factor = []
-            for weight in history_weight:   # history_weightから要素リストを作成
-                history_factor.append(weight.factor)
-            # 1つの的中購入履歴に関して要素の組み合わせを求め,それがfactor_combinationと一致するかどうかを判定
-            history_factor_combination_list = list(itertools.combinations(history_factor, combination_num))
-            for history_factor_combination in history_factor_combination_list:
-                if len(set(history_factor_combination) & set(factor_combination)) == combination_num:
-                    pattern_matched_num += 1
-        # 的中回数が1回以上あった組み合わせを格納していく
-        if pattern_matched_num > 0:
-            hit_factor_pattern_rank[factor_combination] = pattern_matched_num   # 要素パターンをキー,的中回数を値として追加していく
+    hit_factor_pattern_dic = {}
+
+    for factor_combination in factor_combinations_all:
+        hit_factor_pattern_dic[factor_combination] = 0
+
+    for history_weight in history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
+        history_factor = list(map(lambda weight: weight.factor, history_weight))
+        # 1つの的中購入履歴に関して要素の組み合わせを求め,それがfactor_combinationと一致するかどうかを判定
+        history_factor_combination_list = list(itertools.combinations(history_factor, combination_num))
+        for history_factor_combination in history_factor_combination_list:
+            key = list(filter(lambda key: set(key) == set(history_factor_combination), hit_factor_pattern_dic.keys()))[0]
+            hit_factor_pattern_dic[key] += 1
 
     # hit_factor内と同様にソートしてreturn
-    hit_factor_pattern_rank = list(hit_factor_pattern_rank.items())
-    hit_factor_pattern_rank.sort(key=lambda x: -x[1])
-    return hit_factor_pattern_rank
+    hit_factor_pattern_dic = list(hit_factor_pattern_dic.items())
+    hit_factor_pattern_dic = [[k, v] for k, v in hit_factor_pattern_dic if v > 0]   # 的中回数が1回以上のもののみ抽出
+    hit_factor_pattern_dic.sort(key=lambda x: -x[1])
+    return hit_factor_pattern_dic
 
 
 def detail(request, user_id):
