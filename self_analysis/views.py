@@ -75,14 +75,14 @@ def get_hit_factor_combinations_by_user(user):
         # 1つの的中購入履歴に関して要素の組み合わせを求め,それがfactor_combinationと一致するかどうかを判定
         history_factor_combination_list = list(itertools.combinations(history_factor, combination_num))
         for history_factor_combination in history_factor_combination_list:
+            # 順不同にする
             key = list(filter(lambda key: set(key) == set(history_factor_combination), hit_factor_pattern_dic.keys()))[0]
             hit_factor_pattern_dic[key] += 1
 
     # hit_factor内と同様にソートしてreturn
-    hit_factor_pattern_dic = list(hit_factor_pattern_dic.items())
-    hit_factor_pattern_dic = [[k, v] for k, v in hit_factor_pattern_dic if v > 0]   # 的中回数が1回以上のもののみ抽出
-    hit_factor_pattern_dic.sort(key=lambda x: -x[1])
-    return hit_factor_pattern_dic
+    hit_factor_pattern_list = [[k, v] for k, v in hit_factor_pattern_dic.items() if v > 0]   # 的中回数が1回以上のもののみ抽出
+    hit_factor_pattern_list.sort(key=lambda x: -x[1])
+    return hit_factor_pattern_list
 
 
 def detail(request, user_id):
