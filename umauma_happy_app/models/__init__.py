@@ -1,6 +1,5 @@
 from umauma_happy_app.models.course import Course
 from umauma_happy_app.models.data import Data
-from umauma_happy_app.models.distance import Distance
 from umauma_happy_app.models.distance_suitability import DistanceSuitability
 from umauma_happy_app.models.factor import Factor
 from umauma_happy_app.models.favorite import Favorite
