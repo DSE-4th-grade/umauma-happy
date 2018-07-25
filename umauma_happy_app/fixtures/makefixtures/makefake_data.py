@@ -5,6 +5,7 @@ import random
 from faker import Factory
 from .makefake__public import FakeNumber  # 固定数部分をimport
 from .makefake__public import StaticValue
+from .makefake__public import RandomValue
 
 def data():
     fake = Factory.create('ja_JP')
@@ -13,8 +14,7 @@ def data():
     horse_count = 0  # today_horsesリストのid
     all_horse = range(1, FakeNumber.total_horse, 1)  # 登録されている全馬のidのリスト
     all_jockey = range(1, FakeNumber.total_jockey, 1)  # 登録されている全ジョッキーのidのリスト
-    odds_sample = [2.0, 3.9, 4.2, 6.3, 7.3, 14.1, 23.6, 25.2, 61.1, 70.1, 75.2, 156.9, 167.3, 186.1,
-                   200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0]  # オッズのサンプル
+
     for i in range(FakeNumber.total_races):
         date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         thistime_jockeys = random.sample(all_jockey, FakeNumber.head_count)  # レース毎のジョッキーリストを作成
@@ -37,7 +37,7 @@ def data():
             fields["distance_suitability"] = random.randint(1, len(StaticValue.distance_suitability_value))
             fields["horse_order"] = j + 1
             fields["leg_quality_id"] = random.randint(1, len(StaticValue.leg_quality_value))
-            fields["odds"] = odds_sample[shuffled_int1[j]]  # odd_sampleからランダムの要素を選択
+            fields["odds"] = RandomValue.odds_sample[shuffled_int1[j]]  # odd_sampleからランダムの要素を選択
             fields["popularity"] = shuffled_int1[j] + 1  # odds_sampleで選んだid
             fields["rank"] = shuffled_int2[j] + 1  # 上で作成した重複のないランダムなinteger
             fields["created_at"] = date

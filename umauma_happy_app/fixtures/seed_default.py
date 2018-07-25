@@ -7,7 +7,6 @@ if __name__ == '__main__':
     # ここでできたfixtureファイルをDBに反映させるには'python manage.py loaddata seed_default'を実行する
     # PrimaryKeyを設定しているので、何度loaddataを実行しても重複は起こさない(要素数を変えた場合を除く)
     makefixtures.course()  # 各modelのfixtureファイルを作成
-    makefixtures.distance()
     makefixtures.distancesuitability()
     makefixtures.factor()
     makefixtures.groundcondition()
@@ -16,7 +15,6 @@ if __name__ == '__main__':
     component_data = []  # 各fixtureファイルのjsonを格納するためのリスト
     master_data = []  # 各fixtureファイルを結合したデータを格納するためのリスト
     src = ["umauma_happy_app/fixtures/components/faker_course.json",
-           "umauma_happy_app/fixtures/components/faker_distance.json",
            "umauma_happy_app/fixtures/components/faker_distancesuitability.json",
            "umauma_happy_app/fixtures/components/faker_factor.json",
            "umauma_happy_app/fixtures/components/faker_groundcondition.json",
