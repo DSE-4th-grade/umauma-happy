@@ -55,15 +55,15 @@ def count_factor(weight_list):
         factor_counter[factor]['use'] = 0
         factor_counter[factor]['hit'] = 0
     # 要素別使用回数と的中回数を計算
-    print('{0} | {1}件処理します.[開始]'.format(datetime.datetime.now(), len(weight_list)))
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件処理します.[開始]')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
         if judge_hit_or_not(weight.history):
             factor_counter[weight.factor]['hit'] += 1
         # if weight.id % 100 == 0:
             # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
-    print('{0} | {1}件処理しました.処理時間：{2}[完了]'
-          .format(datetime.datetime.now(), len(weight_list), datetime.datetime.now() - pre_time))
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件処理しました.処理時間：'
+          + f'{datetime.datetime.now() - pre_time}' + '[完了]')
     # 的中率を計算
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     return factor_counter
