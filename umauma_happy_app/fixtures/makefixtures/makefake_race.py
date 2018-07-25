@@ -5,6 +5,7 @@ import random
 import datetime
 from .makefake__public import FakeNumber  # 固定数部分をimport
 from .makefake__public import StaticValue
+from .makefake__public import RandomValue
 
 def race():
     fake = Factory.create('ja_JP')
@@ -24,9 +25,8 @@ def race():
             fields["departure_time"] = datetime_race_now
             fields["head_count"] = FakeNumber.head_count  # dataフィールドを作成する際に使用するため固定
             fields["course_id"] = random.randint(1, len(StaticValue.course_value))  # 芝,ダート,障害のどれかを選択
-            fields["distance_id"] = random.randint(1, len(StaticValue.distance_value))  # 距離を選択(intに変更？)
+            fields["distance"] = random.choice(RandomValue.distance_sample)  # 距離を選択(int)
             fields["ground_condition_id"] = random.randint(1, len(StaticValue.ground_condition_value))  # 馬場状態を選択
-            fields["date"] = date_race
             fields["created_at"] = datetime_now
             fields["updated_at"] = datetime_now
             data = cl.OrderedDict()

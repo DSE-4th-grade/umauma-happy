@@ -1,6 +1,5 @@
 from .makefake_course import course
 from .makefake_data import data
-from .makefake_distance import distance
 from .makefake_distancesuitability import distancesuitability
 from .makefake_factor import factor
 from .makefake_groundcondition import groundcondition
