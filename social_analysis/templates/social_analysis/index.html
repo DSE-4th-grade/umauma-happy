@@ -2,32 +2,13 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>detail</title>
+    <title>他者分析</title>
 <br>
     <p1>
-    <h1>成績</h1>
-    <h4>使用要素数：{{ analysis_number }}</h4>
-    <li><a href="{% url 'social_analysis:index' 100 %}">要素数100で試す</a></li>
-    <li><a href="{% url 'social_analysis:index' 300 %}">要素数300で試す</a></li>
-    <li><a href="{% url 'social_analysis:index' 500 %}">要素数500で試す</a></li>
-
-    <table border="1">
-        <tr>
-            <th>要素名</th>
-            <th>使用回数</th>
-            <th>的中回数</th>
-            <th>的中率</th>
-        </tr>
-        {% for key, value in factor_count.items %}
-        <tr>
-            <td>{{ key }}</td>
-            <td>{{ value.use }}</td>
-            <td>{{ value.hit }}</td>
-            <td>{{ value.percentage }}%</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <br>
+    <h4>全体要素数：{{ weight_amount }}</h4>
+    {% for analysis_number in analysis_number_samples %}
+        <li><a href="{% url 'social_analysis:calculate' analysis_number %}">要素数{{ analysis_number }}で試す</a></li>
+    {% endfor %}
     </p1>
 
 </head>

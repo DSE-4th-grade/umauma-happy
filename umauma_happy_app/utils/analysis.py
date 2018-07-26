@@ -4,13 +4,13 @@ from umauma_happy_app.models import *
 import datetime
 
 
-def judge_hit_or_not(history):
+def is_hit(history):
     """
     historyレコードが当たっているか判定する
     :param history: History object
     :return:boolean
     """
-    if history.data.rank < 3:
+    if history.data.rank <= 3:
         return True
     else:
         return False
@@ -58,7 +58,7 @@ def count_factor(weight_list):
     print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件処理します.[開始]')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
-        if judge_hit_or_not(weight.history):
+        if is_hit(weight.history):
             factor_counter[weight.factor]['hit'] += 1
         # if weight.id % 100 == 0:
             # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
