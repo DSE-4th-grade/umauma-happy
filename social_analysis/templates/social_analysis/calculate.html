@@ -9,6 +9,7 @@
     {% for analysis_number in analysis_number_samples %}
         <li><a href="{% url 'social_analysis:calculate' analysis_number %}">要素数{{ analysis_number }}で試す</a></li>
     {% endfor %}
+    <li><a href="all">要素数全要素で試す</a></li>
     <h4>使用要素数：{{ analysis_number }}</h4>
     <table border="1">
         <tr>
