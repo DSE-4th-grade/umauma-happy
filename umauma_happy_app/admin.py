@@ -4,6 +4,7 @@ from umauma_happy_app.models import *
 admin.site.register(Course)
 admin.site.register(Data)
 admin.site.register(DistanceSuitability)
+admin.site.register(EntireFactorAggregate)
 admin.site.register(Factor)
 admin.site.register(Favorite)
 admin.site.register(GroundCondition)
