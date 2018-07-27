@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<int:analysis_number>', views.calculate, name='calculate'),
     path('all', views.calculate, name='calculate'),
+    path('<start>/<end>', views.calculate_by_time, name='calculate_by_time'),
 ]

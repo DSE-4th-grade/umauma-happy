@@ -12,7 +12,6 @@ def race():
     ys = []  # json書き込み用配列に追加
     for i in range(FakeNumber.total_race_arena):  # 10競馬場分作成
         datetime_race = fake.date_time_this_decade(before_now=True, after_now=True, tzinfo=None)  # レースのdeparture_time
-        date_race = fake.date_time_this_decade(before_now=True, after_now=True, tzinfo=None).strftime("%Y-%m-%d")  # レースのdate
         datetime_now = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
         arena = fake.town() + "競馬場"
 

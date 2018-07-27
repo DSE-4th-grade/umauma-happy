@@ -67,3 +67,39 @@ def count_factor(weight_list):
     # 的中率を計算
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     return factor_counter
+
+
+def get_weight(number=None):
+    """
+    指定された数だけweightテーブルからデータを返す. 指定しない場合は全件取得.
+    :param number: int
+    :return all_weight: List
+    """
+    if number is not None:
+        return list(Weight.objects.all()[:number])
+    else:
+        return list(Weight.objects.all())
+
+
+def get_weight_by_time(start, end):
+    """
+    指定された期間のweightを返す.(start <= weight.history.data.race.departure_time <= end)
+    :param start: String(YYYY-MM-DD HH:MM:ss) or Datetime
+    :param end: String(YYYY-MM-DD HH:MM:ss) or Datetime
+    :return:
+    """
+    # 指定された期間のraceを取得
+    race_list = list(Race.objects.filter(departure_time__range=[start, end]))
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{race_list}' + 'についてのデータを取得します.')
+    data_list = {}
+    history_list = {}
+    weight_list = []
+    # raceからweightを取得
+    for race in race_list:
+        print(f'{datetime.datetime.now()}' + ' | ' + f'{race}' + 'についてのデータを取得します.')
+        data_list[race] = list(race.data_set.all())
+        for data in data_list[race]:
+            history_list[data] = list(data.history_set.all())
+            for history in history_list[data]:
+                weight_list.extend(list(history.weight_set.all()))
+    return weight_list

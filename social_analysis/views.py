@@ -4,6 +4,7 @@ from umauma_happy_app.utils import analysis
 from collections import OrderedDict
 import datetime
 
+
 class SampleValues:
     analysis_number_samples = [100, 200, 500, 1000, 2000, 5000]
 
@@ -15,7 +16,7 @@ def index(request):
     :return:
     """
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
-               'weight_amount': len(get_weight())}
+               'weight_amount': len(analysis.get_weight())}
     return render(request, 'social_analysis/index.html', context)
 
 
@@ -26,21 +27,31 @@ def calculate(request, analysis_number=None):
     :param analysis_number: int
     :return render: with Request request, Dictionary context
     """
-    weights = get_weight(analysis_number)
+    pre_time = datetime.datetime.now()  # 経過時間表示用
+    weights = analysis.get_weight(analysis_number)
     factor_count = analysis.count_factor(weights)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
                'factor_count': factor_count,
-               'analysis_number': analysis_number}
+               'analysis_number': analysis_number,
+               'calculation_duration': datetime.datetime.now() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
 
 
-def get_weight(number=None):
+def calculate_by_time(request, start, end):
     """
-    指定された数だけweightテーブルからデータを返す. 指定しない場合は全件取得.
-    :param number: int
-    :return all_weight: List
+    他者分析の全ユーザー該当期間の要素別的中率の表示
+    :param request:
+    :param start:
+    :param end:
+    :return:
     """
-    if number is not None:
-        return list(Weight.objects.all()[:number])
-    else:
-        return list(Weight.objects.all())
+    pre_time = datetime.datetime.now()  # 経過時間表示用
+    weights = analysis.get_weight_by_time(start, end)
+    factor_count = analysis.count_factor(weights)
+    context = {'analysis_number_samples': SampleValues.analysis_number_samples,
+               'factor_count': factor_count,
+               'analysis_start': start,
+               'analysis_end': end,
+               'analysis_number': len(weights),
+               'calculation_duration': datetime.datetime.now() - pre_time}
+    return render(request, 'social_analysis/calculate.html', context)
