@@ -12,8 +12,8 @@ class SampleValues:
 def index(request):
     """
     他者分析の分析内容の選択画面
-    :param request:
-    :return:
+    :param request: Request
+    :return render: with Request request, Dictionary context
     """
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
                'weight_amount': len(analysis.get_weight())}
@@ -40,10 +40,10 @@ def calculate(request, analysis_number=None):
 def calculate_by_time(request, start, end):
     """
     他者分析の全ユーザー該当期間の要素別的中率の表示
-    :param request:
-    :param start:
-    :param end:
-    :return:
+    :param request: Request
+    :param start: String(YYYY-MM-DD HH:MM:ss)
+    :param end: String(YYYY-MM-DD HH:MM:ss)
+    :return render: with Request request, Dictionary context
     """
     pre_time = datetime.datetime.now()  # 経過時間表示用
     weights = analysis.get_weight_by_time(start, end)
