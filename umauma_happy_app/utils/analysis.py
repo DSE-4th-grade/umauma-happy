@@ -55,14 +55,14 @@ def count_factor(weight_list):
         factor_counter[factor]['use'] = 0
         factor_counter[factor]['hit'] = 0
     # 要素別使用回数と的中回数を計算
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件処理します.[開始]')
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行います.[開始]')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
         if is_hit(weight.history):
             factor_counter[weight.factor]['hit'] += 1
         # if weight.id % 100 == 0:
             # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件処理しました.処理時間：'
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行いました.処理時間：'
           + f'{datetime.datetime.now() - pre_time}' + '[完了]')
     # 的中率を計算
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
@@ -90,7 +90,7 @@ def get_weight_by_time(start, end):
     """
     # 指定された期間のraceを取得
     race_list = list(Race.objects.filter(departure_time__range=[start, end]))
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{race_list}' + 'についてのデータを取得します.')
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
     data_list = {}
     history_list = {}
     weight_list = []

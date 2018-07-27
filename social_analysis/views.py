@@ -48,6 +48,7 @@ def calculate_by_time(request, start, end):
     pre_time = datetime.datetime.now()  # 経過時間表示用
     weights = analysis.get_weight_by_time(start, end)
     factor_count = analysis.count_factor(weights)
+    save(factor_count, start, end)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
                'factor_count': factor_count,
                'analysis_start': start,
@@ -55,3 +56,24 @@ def calculate_by_time(request, start, end):
                'analysis_number': len(weights),
                'calculation_duration': datetime.datetime.now() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
+
+
+def save(factor_count, start, end):
+    """
+    全ユーザーの要素別使用回数,的中回数,的中率をDBに保存
+    :param factor_count: Dictionary
+    :param start: String or Datetime
+    :param end: String or Datetime
+    :return:
+    """
+    for key, value in factor_count.items():
+        analysis_data = EntireFactorAggregate()
+        analysis_data.use = value['use']
+        analysis_data.hit = value['hit']
+        analysis_data.percentage = value['percentage']
+        analysis_data.factor_id = key.id
+        analysis_data.start = start
+        analysis_data.end = end
+        analysis_data.save()
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(factor_count)}' + '件のデータをEntireFactorAggregateに保存しました.')
+    return
