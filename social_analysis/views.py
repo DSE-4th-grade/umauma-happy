@@ -46,34 +46,115 @@ def calculate_by_time(request, start, end):
     :return render: with Request request, Dictionary context
     """
     pre_time = datetime.datetime.now()  # 経過時間表示用
-    weights = analysis.get_weight_by_time(start, end)
-    factor_count = analysis.count_factor(weights)
-    save(factor_count, start, end)
+    race_list = analysis.get_race_by_time(start, end)
+    count_factor_by_races(race_list)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
-               'factor_count': factor_count,
                'analysis_start': start,
                'analysis_end': end,
-               'analysis_number': len(weights),
+               'analysis_race_number': len(race_list),
                'calculation_duration': datetime.datetime.now() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
 
 
-def save(factor_count, start, end):
+def calculate_remaining(request):
     """
-    全ユーザーの要素別使用回数,的中回数,的中率をDBに保存
+    未処理のレースに対して,的中率を計算する
+    :param request: Request
+    :return factor_counter: Dictionary
+    """
+    pre_time = datetime.datetime.now()  # 経過時間表示用
+    reservation_race_list = []
+    race_list = Race.objects.all()
+    for race in race_list:
+        if is_calculated_factor_aggregate(race) is False and analysis.is_not_null_rank_in_data(race) is True:
+            reservation_race_list.append(race)
+    count_factor_by_races(reservation_race_list)
+    context = {'analysis_number_samples': SampleValues.analysis_number_samples,
+               'analysis_race_number': len(reservation_race_list),
+               'calculation_duration': datetime.datetime.now() - pre_time}
+    return render(request, 'social_analysis/calculate.html', context)
+
+
+def show_all_aggregate(request):
+    """
+    計算済みの要素別的中率を要素別に表示(全期間)
+    :param request:
+    :return:
+    """
+    pre_time = datetime.datetime.now()  # 経過時間表示用
+    factor_list_all = list(Factor.objects.all())
+    factor_counter = {}
+    analysis_number = 0
+    for factor in factor_list_all:
+        factor_counter[factor] = {}
+        factor_counter[factor]['use'] = 0
+        factor_counter[factor]['hit'] = 0
+    analysis_data_list = list(EntireFactorAggregate.objects.all())
+    for analysis_data in analysis_data_list:
+        factor_counter[analysis_data.factor]['use'] += analysis_data.use
+        factor_counter[analysis_data.factor]['hit'] += analysis_data.hit
+        analysis_number += analysis_data.use
+    # 的中率を計算
+    factor_counter = analysis.calculate_hit_percentage(factor_counter, factor_list_all)
+    context = {'analysis_number_samples': SampleValues.analysis_number_samples,
+               'factor_count': factor_counter,
+               'analysis_number': analysis_number,
+               'analysis_race_number': int(len(analysis_data_list) / len(factor_list_all)),
+               'calculation_duration': datetime.datetime.now() - pre_time}
+    return render(request, 'social_analysis/calculate.html', context)
+
+
+def is_calculated_factor_aggregate(race, factor=None):
+    """
+    与えられたレースの全ユーザの的中率が計算済みか判定
+    :param race: Object
+    :return: boolean
+    """
+    if factor is None:
+        analysis_data_list = list(EntireFactorAggregate.objects.filter(race_id=race.id))
+        if len(analysis_data_list) == 0:
+            return False
+        else:
+            return True
+    else:
+        analysis_data_list = list(EntireFactorAggregate.objects.filter(race_id=race.id, factor_id=factor.id))
+        if len(analysis_data_list) == 0:
+            return False
+        else:
+            return True
+
+
+def save(factor_count, race):
+    """
+    全ユーザーの要素別使用回数,的中回数,的中率をレース毎にDBに保存
     :param factor_count: Dictionary
-    :param start: String or Datetime
-    :param end: String or Datetime
+    :param race: String or Datetime
     :return:
     """
     for key, value in factor_count.items():
-        analysis_data = EntireFactorAggregate()
+        if is_calculated_factor_aggregate(race, key):
+            analysis_data_list = list(EntireFactorAggregate.objects.filter(factor_id=key.id, race_id=race.id))
+            analysis_data = analysis_data_list[0]
+        else:
+            analysis_data = EntireFactorAggregate()
         analysis_data.use = value['use']
         analysis_data.hit = value['hit']
         analysis_data.percentage = value['percentage']
         analysis_data.factor_id = key.id
-        analysis_data.start = start
-        analysis_data.end = end
+        analysis_data.race_id = race.id
         analysis_data.save()
     print(f'{datetime.datetime.now()}' + ' | ' + f'{len(factor_count)}' + '件のデータをEntireFactorAggregateに保存しました.')
+    return
+
+
+def count_factor_by_races(race_list):
+    """
+    与えられたRaceリストを指定しているweightの的中率等を計算し, レース毎にDBに保存
+    :param race_list: List
+    :return factor_counter: Dictionary
+    """
+    for race in race_list:
+        weights = analysis.get_weight_by_race(race)
+        factor_counter = analysis.count_factor(weights)
+        save(factor_counter, race)
     return

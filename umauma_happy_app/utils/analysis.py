@@ -81,16 +81,14 @@ def get_weight(number=None):
         return list(Weight.objects.all())
 
 
-def get_weight_by_time(start, end):
+def get_weight_by_races(race_list):
     """
-    指定された期間のweightを返す.(start <= weight.history.data.race.departure_time <= end)
-    :param start: String(YYYY-MM-DD HH:MM:ss) or Datetime
-    :param end: String(YYYY-MM-DD HH:MM:ss) or Datetime
+    渡されたRaceListのweightを返す.
+    :param race_list: List
     :return:
     """
     # 指定された期間のraceを取得
-    race_list = list(Race.objects.filter(departure_time__range=[start, end]))
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
+    # print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
     data_list = {}
     history_list = {}
     weight_list = []
@@ -103,3 +101,46 @@ def get_weight_by_time(start, end):
             for history in history_list[data]:
                 weight_list.extend(list(history.weight_set.all()))
     return weight_list
+
+
+def get_weight_by_race(race):
+    """
+    与えられたRaceを指定しているweightをリストで返す
+    :param race: Object
+    :return: List
+    """
+    data_list = {}
+    history_list = {}
+    weight_list = []
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{race}' + 'についてのデータを取得します.')
+    data_list[race] = list(race.data_set.all())
+    for data in data_list[race]:
+        history_list[data] = list(data.history_set.all())
+        for history in history_list[data]:
+            weight_list.extend(list(history.weight_set.all()))
+    return weight_list
+
+
+def get_race_by_time(start, end):
+    """
+    指定された期間のraceを返す.(start <= race.departure_time <= end)
+    :param start: String(YYYY-MM-DD HH:MM:ss) or Datetime
+    :param end: String(YYYY-MM-DD HH:MM:ss) or Datetime
+    :return: List
+    """
+    return list(Race.objects.filter(departure_time__range=[start, end]))
+
+
+def is_not_null_rank_in_data(race):
+    """
+    与えられたレースの結果が格納されているか判定
+    :param race: Object
+    :return: boolean
+    """
+    data_list = list(race.data_set.all())
+    for data in data_list:
+        if data.rank is None:
+            return False
+    return True
+
+
