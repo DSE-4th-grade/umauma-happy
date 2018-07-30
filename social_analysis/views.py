@@ -3,6 +3,7 @@ from umauma_happy_app.models import *
 from umauma_happy_app.utils import analysis
 from collections import OrderedDict
 import datetime
+import time
 
 
 class SampleValues:
@@ -27,17 +28,17 @@ def calculate(request, analysis_number=None):
     :param analysis_number: int
     :return render: with Request request, Dictionary context
     """
-    pre_time = datetime.datetime.now()  # 経過時間表示用
+    pre_time = time.time()  # 経過時間表示用
     weights = analysis.get_weight(analysis_number)
     factor_count = analysis.count_factor(weights)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
                'factor_count': factor_count,
                'analysis_number': analysis_number,
-               'calculation_duration': datetime.datetime.now() - pre_time}
+               'calculation_duration': time.time() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
 
 
-def calculate_by_time(request, start, end):
+def calculate_by_period(request, start, end):
     """
     他者分析の全ユーザー該当期間の要素別的中率の表示
     :param request: Request
@@ -46,7 +47,7 @@ def calculate_by_time(request, start, end):
     :return render: with Request request, Dictionary context
     """
     pre_time = datetime.datetime.now()  # 経過時間表示用
-    race_list = analysis.get_race_by_time(start, end)
+    race_list = analysis.get_race_by_period(start, end)
     count_factor_by_races(race_list)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
                'analysis_start': start,
@@ -81,14 +82,10 @@ def show_all_aggregate(request):
     :param request:
     :return:
     """
-    pre_time = datetime.datetime.now()  # 経過時間表示用
+    pre_time = time.time()  # 経過時間表示用
     factor_list_all = list(Factor.objects.all())
-    factor_counter = {}
     analysis_number = 0
-    for factor in factor_list_all:
-        factor_counter[factor] = {}
-        factor_counter[factor]['use'] = 0
-        factor_counter[factor]['hit'] = 0
+    factor_counter = analysis.init_factor_counter()  # 結果を格納する辞書を初期化
     analysis_data_list = list(EntireFactorAggregate.objects.all())
     for analysis_data in analysis_data_list:
         factor_counter[analysis_data.factor]['use'] += analysis_data.use
@@ -100,7 +97,7 @@ def show_all_aggregate(request):
                'factor_count': factor_counter,
                'analysis_number': analysis_number,
                'analysis_race_number': int(len(analysis_data_list) / len(factor_list_all)),
-               'calculation_duration': datetime.datetime.now() - pre_time}
+               'calculation_duration': time.time() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
 
 

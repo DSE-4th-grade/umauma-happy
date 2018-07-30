@@ -2,6 +2,7 @@ from collections import OrderedDict
 from umauma_happy_app.models import *
 
 import datetime
+import time
 
 
 def is_hit(history):
@@ -47,13 +48,8 @@ def count_factor(weight_list):
     :return factor_counter: Dictionary
     """
     factor_list_all = list(Factor.objects.all())
-    pre_time = datetime.datetime.now()  # 経過時間表示用
-    # 結果を格納する辞書を初期化
-    factor_counter = {}
-    for factor in factor_list_all:
-        factor_counter[factor] = {}
-        factor_counter[factor]['use'] = 0
-        factor_counter[factor]['hit'] = 0
+    pre_time = time.time()  # 経過時間表示用
+    factor_counter = init_factor_counter()  # 結果を格納する辞書を初期化
     # 要素別使用回数と的中回数を計算
     print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行います.[開始]')
     for weight in weight_list:
@@ -63,7 +59,7 @@ def count_factor(weight_list):
         # if weight.id % 100 == 0:
             # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
     print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行いました.処理時間：'
-          + f'{datetime.datetime.now() - pre_time}' + '[完了]')
+          + f'{time.time() - pre_time}' + '[完了]')
     # 的中率を計算
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     return factor_counter
@@ -85,21 +81,14 @@ def get_weight_by_races(race_list):
     """
     渡されたRaceListのweightを返す.
     :param race_list: List
-    :return:
+    :return: List
     """
     # 指定された期間のraceを取得
-    # print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
-    data_list = {}
-    history_list = {}
+    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
     weight_list = []
     # raceからweightを取得
     for race in race_list:
-        print(f'{datetime.datetime.now()}' + ' | ' + f'{race}' + 'についてのデータを取得します.')
-        data_list[race] = list(race.data_set.all())
-        for data in data_list[race]:
-            history_list[data] = list(data.history_set.all())
-            for history in history_list[data]:
-                weight_list.extend(list(history.weight_set.all()))
+        weight_list.extend(get_weight_by_race(race))
     return weight_list
 
 
@@ -121,7 +110,7 @@ def get_weight_by_race(race):
     return weight_list
 
 
-def get_race_by_time(start, end):
+def get_race_by_period(start, end):
     """
     指定された期間のraceを返す.(start <= race.departure_time <= end)
     :param start: String(YYYY-MM-DD HH:MM:ss) or Datetime
@@ -142,5 +131,19 @@ def is_not_null_rank_in_data(race):
         if data.rank is None:
             return False
     return True
+
+
+def init_factor_counter():
+    """
+    factorの使用回数等を格納するfactor_counterを初期化
+    :return: Dictionary
+    """
+    factor_list_all = list(Factor.objects.all())
+    factor_counter = {}
+    for factor in factor_list_all:
+        factor_counter[factor] = {}
+        factor_counter[factor]['use'] = 0
+        factor_counter[factor]['hit'] = 0
+    return factor_counter
 
 
