@@ -20,7 +20,7 @@ class Data(models.Model):
   leg_quality = models.ForeignKey(LegQuality, on_delete=models.PROTECT)
   odds = models.DecimalField(decimal_places=1, max_digits=5)
   popularity = models.IntegerField()
-  rank = models.IntegerField()
+  rank = models.IntegerField(null=True)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
