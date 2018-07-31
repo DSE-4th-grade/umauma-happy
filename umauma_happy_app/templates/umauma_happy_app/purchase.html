@@ -1,0 +1,71 @@
+{% extends "umauma_happy_app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="row mt-5">
+  <div class="col-12">
+    <h2 class="text-center">{{ race.name }}</h2>
+  </div>
+</div>
+<div class="row mt-3">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">馬名</th>
+        <th scope="col">騎手</th>
+        <th scope="col">性別</th>
+        <th scope="col">斤量</th>
+        <th scope="col">厩舎</th>
+        <th scope="col">調教師</th>
+        <th scope="col">距離適性</th>
+        <th scope="col">枠番</th>
+        <th scope="col">脚質</th>
+        <th scope="col">オッズ</th>
+        <th scope="col">人気</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for data in data_list %}
+        <tr>
+          <td>{{ data.horse.name }}</td>
+          <td>{{ data.jockey.name }}</td>
+          <td>{{ data.sex }}</td>
+          <td>{{ data.handicap }}</td>
+          <td>{{ data.stable }}</td>
+          <td>{{ data.trainer }}</td>
+          <td>{{ data.distance_suitability }}</td>
+          <td>{{ data.horse_order }}</td>
+          <td>{{ data.leg_quality }}</td>
+          <td>{{ data.odds }}</td>
+          <td>{{ data.popularity }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="row mt-3">
+  <form action="{% url 'umauma_happy_app:purchase_do' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="data_list" value="{{ data_list }}"/>
+    <div class="form-group">
+      <label for="horse">馬</label>
+      <select name="data" class="form-control" id="horse">
+        {% for data in data_list %}
+        <option value="{{ data.id }}">{{ data.horse.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% for key, value in factor_dict.items %}
+      <div class="form-group">
+        <label for="{{ key }}">{{ value }}</label>
+        <!-- <input name="{{ key }}" type="number" class="form-control" id="{{ key }}"> -->
+        <input name="{{ key }}" type="range" min="0" max="5" step="1" value="0" class="form-control-range" id="{{ key }}">
+      </div>
+    {% endfor %}
+    <div class="text-center">
+      <button class="btn btn-primary" type="submit">送信</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}
