@@ -2,13 +2,16 @@ class FakeNumber:
     head_count = 11  # 1レースに出場する馬の数
     total_horse = 200  # fakerで作成する馬の数
     total_jockey = 20  # fakerで作成する騎手の数
-    total_race_arena = 10  # fakerで作成するレースの競馬場の数
+    total_past_race_arena = 10  # fakerで作成する過去のレースの競馬場の数
+    total_future_race_arena = 5  # fakerで作成する未来のレースの競馬場の数
     total_race = 12  # fakerで競馬場毎に作成するレースの数
     total_stable = 20  # fakerで作成する厩舎の数
     total_trainer = 20  # fakerで作成する厩舎の数
     total_user = 20  # fakerで作成するユーザーの数
 
-    total_races = total_race_arena * total_race  # fakerで最終的に作成されるレースの数
+    total_past_races = total_past_race_arena * total_race  # fakerで最終的に作成される過去のレースの数
+    total_future_races = total_future_race_arena * total_race  # fakerで最終的に作成される未来のレースの数
+    total_races = total_past_races + total_future_races  # fakerで最終的に作成されるレースの数
 
     purchase_factor_num_l = 1  # 購入に対して考慮した最小のファクター数
     purchase_factor_num_g = 5  # 購入に対して考慮した最大ファクター数
