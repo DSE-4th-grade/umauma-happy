@@ -16,25 +16,41 @@
             <div class="row">
                 <a class="btn btn-danger mx-1 my-1" href="all">全要素で試す</a>
             </div>
-            <h4>使用要素数：{{ analysis_number }}</h4>
             <div class="row">
-                <table class="table">
-                    <tr>
-                        <th>要素名</th>
-                        <th>使用回数</th>
-                        <th>的中回数</th>
-                        <th>的中率</th>
-                    </tr>
-                    {% for key, value in factor_count.items %}
-                    <tr>
-                        <td>{{ key }}</td>
-                        <td>{{ value.use }}</td>
-                        <td>{{ value.hit }}</td>
-                        <td>{{ value.percentage }}%</td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                <a class="btn btn-success mx-1 my-2" href="/social_analysis/2017-01-01%2000:00:00/2017-12-31%2023:59:59">去年1年間のレースで試す</a>
+                <a class="btn btn-info mx-1 my-2" href="/social_analysis/remaining">未処理のレースを計算</a>
+                <a class="btn btn-secondary mx-1 my-2" href="/social_analysis/show_all">保存済みのデータを見る</a>
             </div>
+            {%  if analysis_number is not None %}
+            <h4>使用要素数：{{ analysis_number }}</h4>
+            {% endif %}
+            {%  if analysis_race_number is not None %}
+            <h4>使用レース数：{{ analysis_race_number }}</h4>
+            {% endif %}
+            <h4>計算時間：{{ calculation_duration }}</h4>
+            {% if analysis_start is not None %}
+                <h4>解析期間：{{ analysis_start }} ~ {{ analysis_end }}</h4>
+            {% endif %}
+            {% if factor_count is not None %}
+                <div class="row">
+                    <table class="table">
+                        <tr>
+                            <th>要素名</th>
+                            <th>使用回数</th>
+                            <th>的中回数</th>
+                            <th>的中率</th>
+                        </tr>
+                        {% for key, value in factor_count.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value.use }}</td>
+                            <td>{{ value.hit }}</td>
+                            <td>{{ value.percentage }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
 
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
