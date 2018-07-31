@@ -1,0 +1,22 @@
+{% extends "umauma_happy_app/base.html" %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 class="text-center">レース一覧</h2>
+    </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    {% if race_list %}
+    <ul>
+      {% for race in race_list %}
+        <li><a href="{% url 'umauma_happy_app:purchase' race.id %}">{{ race.name }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>No race.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

@@ -25,7 +25,7 @@ class Data(models.Model):
   updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-    return self.horse.name + str(self.race.date)
+    return self.horse.name + str(self.race.departure_time)
 
   class Meta:
     app_label = 'umauma_happy_app'
