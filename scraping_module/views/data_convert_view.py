@@ -72,23 +72,38 @@ def save_data(race, order):
     distance_suitability = DistanceSuitability.objects.get(id=1)
     leg_quality = LegQuality.objects.get(id=1)
     ##>>>>>>レース前はrank未定
-    data = Data(horse=Horse.objects.get(link=horse_link[order]),
+    ##>>>>>>レース後ならdata_rankから取得
+    # data_sexからsex(id)へ変換・・・せん馬=0, 牡馬=1, 牝馬=2
+    if data_sex[order] == "セ":
+        sex_id = 0
+    elif data_sex[order] == "牡":
+        sex_id = 1
+    elif data_sex[order] == "牝":
+        sex_id = 2
+    else:
+        print("Error: data_sex doesn't match any str")
+        return -1
+    data = Data(
+                horse=Horse.objects.get(link=horse_link[order]),
                 race=Race.objects.get(departure_time=race.departure_time),
                 jockey=Jockey.objects.get(link=jockey_link[order]),
-                sex=1, handicap=50,
+                sex=sex_id, handicap=int(data_handicap[order]),
                 stable=Stable.objects.get(name=stable_name[order]),
                 trainer=Trainer.objects.get(name=stable_name[order]),
-                distance_suitability=distance_suitability, horse_order=order,
-                leg_quality=leg_quality, odds=1.0,
-                popularity=1, rank=0)
+                distance_suitability=distance_suitability, horse_order=order+1,
+                leg_quality=leg_quality, odds=float(data_popularity[order]),
+                popularity=int(data_popularity[order]), rank=0
+                )
     data.save()
     return data
 
+
+print(data_odds)
+print(data_popularity)
 horseobj = save_horse_data(horse_name, horse_birth, horse_link)
 save_jockey_data(jockey_name, jockey_link)
-print(stable_name)
 save_trainer_data(stable_name, trainer_link)
-# 調教師ひつようか
+##>>>>>>>>調教師必要?????
 save_stable_data(stable_name, trainer_link)
 raceobj = save_race_data(race_number, race_name, race_arena, groundcondition_value, course_value, distance_value, race_head_count)
 for i in range(len(horse_link)):
