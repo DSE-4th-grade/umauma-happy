@@ -75,19 +75,19 @@ for so in range(0,len(ddate)):#一日ごとにスクレイピング
                 data_horse_id.append(racevl('a', href=re.compile('http://db.netkeiba.com/horse/'))[p].get('href',None))
                 data_popularity.append(racevl('td', class_=re.compile('r*ml'))[p * 2].string)
                 data_odds.append(racevl('td', class_=re.compile('txt_r'))[p].string)
-        else:#まだ始まっていないレース
+        else:   # まだ始まっていないレース
             raceval = racelink[i].find('div', class_='mainrace_data')
             raceval3 = racelink[i].find('table', class_='race_table_old')
             raceval4 = raceval3.find_all('td')
             for k in range(0,len(raceval4)):
                 if k == 2+10*len(data_sex):
-                  data_sex.append(raceval4[k])
+                  data_sex.append(raceval4[k].get_text()[:1])
                 if k == 3+10*len(data_handicap):
-                  data_handicap.append(raceval4[k])
+                  data_handicap.append(raceval4[k].get_text()[:2])
                 if k == 6+10*len(data_odds):
-                  data_odds.append(raceval4[k])
+                  data_odds.append(raceval4[k].get_text())
                 if k == 7+10*len(data_popularity):
-                  data_popularity.append(raceval4[k])
+                  data_popularity.append(raceval4[k].get_text())
             courseval = raceval.find('p').string
             courseval2 = raceval('p')[1].string
             course_value = courseval[0]
