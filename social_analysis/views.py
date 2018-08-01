@@ -67,7 +67,7 @@ def calculate_remaining(request):
     reservation_race_list = []
     race_list = Race.objects.all()
     for race in race_list:
-        if is_calculated_factor_aggregate(race) is False and analysis.is_not_null_rank_in_data(race) is True:
+        if is_calculated_factor_aggregate(race) is False:
             reservation_race_list.append(race)
     count_factor_by_races(reservation_race_list)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
@@ -103,7 +103,7 @@ def show_all_aggregate(request):
 
 def is_calculated_factor_aggregate(race, factor=None):
     """
-    与えられたレースの全ユーザの的中率が計算済みか判定
+    与えられたレースの全ユーザの使用率が計算済みか判定
     :param race: Object
     :return: boolean
     """
@@ -134,9 +134,10 @@ def save(factor_count, race):
             analysis_data = analysis_data_list[0]
         else:
             analysis_data = EntireFactorAggregate()
+        if value['hit'] is not None and value['percentage'] is not None:
+            analysis_data.hit = value['hit']
+            analysis_data.percentage = value['percentage']
         analysis_data.use = value['use']
-        analysis_data.hit = value['hit']
-        analysis_data.percentage = value['percentage']
         analysis_data.factor_id = key.id
         analysis_data.race_id = race.id
         analysis_data.save()
@@ -152,6 +153,9 @@ def count_factor_by_races(race_list):
     """
     for race in race_list:
         weights = analysis.get_weight_by_race(race)
-        factor_counter = analysis.count_factor(weights)
+        if analysis.is_not_null_rank_in_data(race):
+            factor_counter = analysis.count_factor(weights)
+        else:
+            factor_counter = analysis.count_factor_only_use(weights)
         save(factor_counter, race)
     return
