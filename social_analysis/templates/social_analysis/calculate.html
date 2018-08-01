@@ -18,11 +18,12 @@
             </div>
             <div class="row">
                 <a class="btn btn-success mx-1 my-2" href="/social_analysis/2017-01-01%2000:00:00/2017-12-31%2023:59:59">去年1年間のレースで試す</a>
+                <a class="btn btn-success mx-1 my-2" href="/social_analysis/2019-01-01%2000:00:00/2019-12-31%2023:59:59">来年1年間のレースで試す</a>
                 <a class="btn btn-info mx-1 my-2" href="/social_analysis/remaining">未処理のレースを計算</a>
                 <a class="btn btn-secondary mx-1 my-2" href="/social_analysis/show_all">保存済みのデータを見る</a>
             </div>
             {%  if analysis_number is not None %}
-                <h4>使用要素数：{{ analysis_number }}</h4><br>
+                <h4>使用要素数：{{ analysis_number }}</h4>
             {% endif %}
             {%  if analysis_race_number is not None %}
             <h4>使用レース数：{{ analysis_race_number }}</h4>
@@ -82,7 +83,7 @@
                 <div class="row">
                     <h4 class="mx-2">未実施のレース現段階での使用率</h4>
                 </div>
-                <dic class="row">
+                <div class="row">
                     <h5 class="mx-2">使用要素数：{{ analysis_number_future }}</h5>
                     <h5 class="mx-2">使用レース数：{{ analysis_race_number_future }}</h5>
                     <table class="table">

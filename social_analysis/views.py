@@ -151,8 +151,9 @@ def save(factor_count, race):
             analysis_data = EntireFactorAggregate()
         if value.keys() >= {'hit', 'hit_percentage'}:  # hit,hit_percentageが格納されている時
             analysis_data.hit = value['hit']
-            analysis_data.percentage = value['hit_percentage']
+            analysis_data.hit_percentage = value['hit_percentage']
         analysis_data.use = value['use']
+        analysis_data.use_percentage = value['use_percentage']
         analysis_data.factor_id = key.id
         analysis_data.race_id = race.id
         analysis_data.save()
