@@ -84,19 +84,34 @@ def show_all_aggregate(request):
     """
     pre_time = time.time()  # 経過時間表示用
     factor_list_all = list(Factor.objects.all())
-    analysis_number = 0
-    factor_counter = analysis.init_factor_counter()  # 結果を格納する辞書を初期化
-    analysis_data_list = list(EntireFactorAggregate.objects.all())
-    for analysis_data in analysis_data_list:
-        factor_counter[analysis_data.factor]['use'] += analysis_data.use
-        factor_counter[analysis_data.factor]['hit'] += analysis_data.hit
-        analysis_number += analysis_data.use
-    # 的中率を計算
-    factor_counter = analysis.calculate_hit_percentage(factor_counter, factor_list_all)
+    analysis_number_past = 0
+    analysis_number_future = 0
+    factor_counter_past = analysis.init_factor_counter()  # 過去レースに関する結果を格納する辞書を初期化
+    factor_counter_future = analysis.init_factor_counter_only_use()  # 未来レースに関する結果を格納する辞書を初期化
+    # 過去レースに関する計算結果を取得
+    analysis_data_list_past = list(EntireFactorAggregate.objects.filter(hit__isnull=False))
+    for analysis_data in analysis_data_list_past:
+        factor_counter_past[analysis_data.factor]['use'] += analysis_data.use
+        factor_counter_past[analysis_data.factor]['hit'] += analysis_data.hit
+        analysis_number_past += analysis_data.use
+    # 的中率と使用率を計算
+    factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
+    factor_counter_past = analysis.calculate_use_percentage(factor_counter_past, factor_list_all)
+
+    # 未来レースに関する計算結果を取得
+    analysis_data_list_future = list(EntireFactorAggregate.objects.filter(hit__isnull=True))
+    for analysis_data in analysis_data_list_future:
+        factor_counter_future[analysis_data.factor]['use'] += analysis_data.use
+        analysis_number_future += analysis_data.use
+    # 使用率を計算
+    factor_counter_future = analysis.calculate_use_percentage(factor_counter_future, factor_list_all)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
-               'factor_count': factor_counter,
-               'analysis_number': analysis_number,
-               'analysis_race_number': int(len(analysis_data_list) / len(factor_list_all)),
+               'factor_count_past': factor_counter_past,
+               'factor_count_future': factor_counter_future,
+               'analysis_number_past': analysis_number_past,
+               'analysis_number_future': analysis_number_future,
+               'analysis_race_number_past': int(len(analysis_data_list_past) / len(factor_list_all)),
+               'analysis_race_number_future': int(len(analysis_data_list_future) / len(factor_list_all)),
                'calculation_duration': time.time() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
 
@@ -134,9 +149,9 @@ def save(factor_count, race):
             analysis_data = analysis_data_list[0]
         else:
             analysis_data = EntireFactorAggregate()
-        if value['hit'] is not None and value['percentage'] is not None:
+        if value.keys() >= {'hit', 'hit_percentage'}:  # hit,hit_percentageが格納されている時
             analysis_data.hit = value['hit']
-            analysis_data.percentage = value['percentage']
+            analysis_data.percentage = value['hit_percentage']
         analysis_data.use = value['use']
         analysis_data.factor_id = key.id
         analysis_data.race_id = race.id
