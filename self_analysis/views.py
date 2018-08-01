@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from umauma_happy_app.models import *
 from django.http import HttpResponse
 import itertools
-
+from umauma_happy_app.utils import analysis
 
 # Create your views here.
 
@@ -18,8 +18,7 @@ def get_hit_history_by_user(user):
     history_list_all = list(History.objects.all())
 
     # 的中した購入履歴のみを抽出
-    # ここでの的中判定ロジックは単純に3着以内とする
-    hit_history_list = filter(lambda history: history.user == user and history.data.rank <= 3, history_list_all)
+    hit_history_list = filter(lambda history: history.user == user and analysis.is_hit(history)==True, history_list_all)
 
     return hit_history_list
 
