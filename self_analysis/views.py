@@ -69,38 +69,51 @@ def get_hit_factor_rank_by_user(user):
     return hit_factor_rank
 
 
-# 指定ユーザの要素の組み合わせごとの的中回数を二次元配列で返す [ [5, <factor1,factor2>], [3, <factor6, factor8>], ...]
+# 指定ユーザの要素の組み合わせごとの的中回数を辞書形式で返す
+#  [ [5, <factor1,factor2>], [3, <factor6, factor8>], ...]
 def get_hit_factor_combinations_by_user(user):
-    combination_num = 2     # 組み合わせ要素数。まずは2つの要素の組み合わせ
-    factor_list_all = list(Factor.objects.all())
-    factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
-    history_weight_list = get_hit_wight_list_by_user(user)
+    combination_num = 2
+    hit_history_weight_list = get_hit_wight_list_by_user(user)
 
-    hit_factor_pattern_dic = {}
+    # 購入履歴ごとにタプルで区切られたすべての重みリスト [(Weight, Weight), (Weight, Weight, Weight),...]
+    history_list_all = list(History.objects.all())
+    user_history_list = filter(lambda history: history.user == user, history_list_all)
+    user_weight_list = []
+    for history in user_history_list:
+        history_weight = get_list_or_404(Weight, history=history)
+        user_weight_list.append(history_weight)
 
-    for factor_combination in factor_combinations_all:
-        hit_factor_pattern_dic[factor_combination] = 0
+    factor_combination_counter = analysis.init_factor_combination_counter() # 初期化
 
-    for history_weight in history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
-        history_factor = list(map(lambda weight: weight.factor, history_weight))
-        # 1つの的中購入履歴に関して要素の組み合わせを求め,それがfactor_combinationと一致するかどうかを判定
-        history_factor_combination_list = list(itertools.combinations(history_factor, combination_num))
+    for user_weight in user_weight_list:
+        history_factor = list(map(lambda weight: weight.factor, user_weight))
+        com_list = list(itertools.combinations(history_factor, combination_num))
+        for com in com_list:
+            # 順不同にする
+            key = list(filter(lambda key: set(key) == set(com), factor_combination_counter.keys()))[0]
+            factor_combination_counter[key]['use'] += 1
+
+    for history_weight in hit_history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
+        hit_history_factor = list(map(lambda weight: weight.factor, history_weight))
+        # 1つの的中購入履歴に関して要素の組み合わせを求め、factor_combination_counterをインクリメントしていく
+        history_factor_combination_list = list(itertools.combinations(hit_history_factor, combination_num))
         for history_factor_combination in history_factor_combination_list:
             # 順不同にする
-            key = list(filter(lambda key: set(key) == set(history_factor_combination), hit_factor_pattern_dic.keys()))[0]
-            hit_factor_pattern_dic[key] += 1
+            key = list(filter(lambda key: set(key) == set(history_factor_combination), factor_combination_counter.keys()))[0]
+            factor_combination_counter[key]['hit'] += 1
 
-    # hit_factor内と同様にソートしてreturn
-    hit_factor_pattern_list = [[k, v] for k, v in hit_factor_pattern_dic.items() if v > 0]   # 的中回数が1回以上のもののみ抽出
-    hit_factor_pattern_list.sort(key=lambda x: -x[1])
-    return hit_factor_pattern_list
+    factor_list_all = list(Factor.objects.all())
+    factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
+    factor_combination_counter = analysis.calculate_hit_percentage(factor_combination_counter, factor_combinations_all)
+
+    return factor_combination_counter
 
 
 def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
 
     context = {'user': user,
-               'hit_factor_pattern': get_hit_factor_combinations_by_user(user),
+               'factor_combination_counter': get_hit_factor_combinations_by_user(user),
                'factor_counter': analysis.count_factor(get_weight_list_by_user(user)),
                }
 
