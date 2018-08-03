@@ -3,7 +3,7 @@ from umauma_happy_app.models import *
 
 import datetime
 import time
-
+import itertools
 
 def is_hit(history):
     """
@@ -147,3 +147,18 @@ def init_factor_counter():
     return factor_counter
 
 
+def init_factor_combination_counter():
+    """
+    factorの使用回数等を格納するfactor_combination_counterを初期化
+    :return: Dictionary
+    """
+    factor_list_all = list(Factor.objects.all())
+    combination_num = 2     # 組み合わせ要素数。まずは2つの要素の組み合わせ
+    factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
+
+    factor_combination_counter = {}
+    for factor_combination in factor_combinations_all:
+        factor_combination_counter[factor_combination] = {}
+        factor_combination_counter[factor_combination]['use'] = 0
+        factor_combination_counter[factor_combination]['hit'] = 0
+    return factor_combination_counter
