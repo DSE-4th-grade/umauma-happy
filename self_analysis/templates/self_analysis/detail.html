@@ -33,14 +33,18 @@
     <table border="1">
         <tr>
             <th>注目した要素群</th>
+            <th>購入回数</th>
             <th>的中回数</th>
+            <th>的中率</th>
         </tr>
-        {% for factor_pattern, number in hit_factor_pattern %}
+        {% for com, value in factor_combination_counter.items %}
         <tr>
             <td>
-                {% for factor in factor_pattern %} {{ factor.name }} {% endfor%}
+                {% for factor in com %}[{{ factor.name }}]{% endfor %}
             </td>
-            <td>{{ number }}</td>
+            <td>{{ value.use }}</td>
+            <td>{{ value.hit }}</td>
+            <td>{{ value.percentage }}</td>
         </tr>
         {% endfor %}
     </table>
