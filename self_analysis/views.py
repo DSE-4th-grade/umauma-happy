@@ -23,7 +23,19 @@ def get_hit_history_by_user(user):
     return hit_history_list
 
 
-# 指定したユーザの的中購入履歴に紐づくすべての重みリストを返す [ [(Weight, Weight), (Weight, Weight, Weight), ...] ]
+# 指定したユーザの全ての購入履歴に紐づく重みリストを返す [Weight, Weight, Weight, ...]
+def get_weight_list_by_user(user):
+    history_list_all = list(History.objects.all())
+    user_history_list = filter(lambda history: history.user == user, history_list_all)
+    user_weight_list = []
+    for history in user_history_list:
+        history_weight = get_list_or_404(Weight, history=history)
+        user_weight_list.extend(history_weight)
+    return user_weight_list
+
+
+# 指定したユーザの的中購入履歴に紐づくすべての重みリストを返す
+# それぞれの的中購入履歴をタプルでまとめる [ [(Weight, Weight), (Weight, Weight, Weight), ...] ]
 def get_hit_wight_list_by_user(user):
     hit_history_list = get_hit_history_by_user(user)
 
@@ -88,7 +100,8 @@ def detail(request, user_id):
     user = get_object_or_404(User, pk=user_id)
 
     context = {'user': user,
-               'hit_rank_list': get_hit_factor_rank_by_user(user),
-               'hit_factor_pattern': get_hit_factor_combinations_by_user(user), }
+               'hit_factor_pattern': get_hit_factor_combinations_by_user(user),
+               'factor_counter': analysis.count_factor(get_weight_list_by_user(user)),
+               }
 
     return render(request, 'self_analysis/detail.html', context)
