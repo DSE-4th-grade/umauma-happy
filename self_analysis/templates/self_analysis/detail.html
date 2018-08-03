@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <link rel="stylesheet" type="text/css" href="../../static/self_analysis/detail.css">
+</head>
     <meta charset="UTF-8">
     <title>detail</title>
 <br>
-    <p1>
-    <h1>{{ user.name }}成績</h1>
-    要素別的中回数
+
+<body>
+    <h1>{{ user.name }}の成績</h1>
+    <div class="simple">
+        <font size="+2">要素別的中回数</font>
     <table border="1">
         <tr>
             <th>注目した要素</th>
+            <th>購入回数</th>
             <th>的中回数</th>
+            <th>的中率</th>
         </tr>
-        {% for factor, number in hit_rank_list %}
+        {% for key,value in factor_counter.items %}
         <tr>
-            <td>{{ factor.name }}</td>
-            <td>{{ number }}</td>
+            <td>{{ key }}</td>
+            <td>{{ value.use }}</td>
+            <td>{{ value.hit }}</td>
+            <td>{{ value.percentage }}</td>
         </tr>
         {% endfor %}
     </table>
-    <br>
-
-    要素の組み合わせで見た的中回数
+    </div>
+    <div class="combination">
+        <font size="+2">要素の組み合わせで見た的中回数</font>
     <table border="1">
         <tr>
             <th>注目した要素群</th>
@@ -36,8 +44,7 @@
         </tr>
         {% endfor %}
     </table>
-
-    </p1>
-
-</head>
+    </div>
+</body>
 </html>
+
