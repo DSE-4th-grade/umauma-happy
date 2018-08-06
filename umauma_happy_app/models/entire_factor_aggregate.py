@@ -4,9 +4,10 @@ from umauma_happy_app.models.race import Race
 
 class EntireFactorAggregate(models.Model):
   factor = models.ForeignKey(Factor, on_delete=models.PROTECT)
-  use = models.IntegerField()
-  hit = models.IntegerField()
-  percentage = models.DecimalField(decimal_places=5, max_digits=8, null=True)
+  use = models.IntegerField(null=True)
+  hit = models.IntegerField(null=True)
+  hit_percentage = models.DecimalField(decimal_places=5, max_digits=8, null=True)
+  use_percentage = models.DecimalField(decimal_places=5, max_digits=8, null=True)
   race = models.ForeignKey(Race, on_delete=models.PROTECT, null=True)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)

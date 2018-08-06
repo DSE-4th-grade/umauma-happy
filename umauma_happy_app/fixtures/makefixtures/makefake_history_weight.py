@@ -54,7 +54,6 @@ def history_weight():
                     ys.append(data)  # json書き込み用配列に追加
                     pk_count_w += 1
                 pk_count_h += 1
-
     fw = open('umauma_happy_app/fixtures/components/faker_history_weight.json', 'w')
     json.dump(ys, fw, indent=2, ensure_ascii=False)  # 中間fixtureファイルを出力
 
