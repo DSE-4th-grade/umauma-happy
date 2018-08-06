@@ -84,19 +84,19 @@ def show_all_aggregate(request):
     """
     pre_time = time.time()  # 経過時間表示用
     factor_list_all = list(Factor.objects.all())
-    analysis_number_past = 0
     analysis_number_future = 0
-    factor_counter_past = analysis.init_factor_counter()  # 過去レースに関する結果を格納する辞書を初期化
+    # factor_counter_past = analysis.init_factor_counter()  # 過去レースに関する結果を格納する辞書を初期化
     factor_counter_future = analysis.init_factor_counter_only_use()  # 未来レースに関する結果を格納する辞書を初期化
     # 過去レースに関する計算結果を取得
-    analysis_data_list_past = list(EntireFactorAggregate.objects.filter(hit__isnull=False))
-    for analysis_data in analysis_data_list_past:
-        factor_counter_past[analysis_data.factor]['use'] += analysis_data.use
-        factor_counter_past[analysis_data.factor]['hit'] += analysis_data.hit
-        analysis_number_past += analysis_data.use
-    # 的中率と使用率を計算
-    factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
-    factor_counter_past = analysis.calculate_use_percentage(factor_counter_past, factor_list_all)
+    # analysis_data_list_past = list(EntireFactorAggregate.objects.filter(hit__isnull=False))
+    # for analysis_data in analysis_data_list_past:
+    #     factor_counter_past[analysis_data.factor]['use'] += analysis_data.use
+    #     factor_counter_past[analysis_data.factor]['hit'] += analysis_data.hit
+    #     analysis_number_past += analysis_data.use
+    # # 的中率と使用率を計算
+    # factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
+    # factor_counter_past = analysis.calculate_use_percentage(factor_counter_past, factor_list_all)
+    summarize_past = summarize_past_race_aggregate()
 
     # 未来レースに関する計算結果を取得
     analysis_data_list_future = list(EntireFactorAggregate.objects.filter(hit__isnull=True))
@@ -106,11 +106,11 @@ def show_all_aggregate(request):
     # 使用率を計算
     factor_counter_future = analysis.calculate_use_percentage(factor_counter_future, factor_list_all)
     context = {'analysis_number_samples': SampleValues.analysis_number_samples,
-               'factor_count_past': factor_counter_past,
+               'factor_count_past': summarize_past['factor_counter'],
                'factor_count_future': factor_counter_future,
-               'analysis_number_past': analysis_number_past,
+               'analysis_number_past': summarize_past['analysis_number'],
                'analysis_number_future': analysis_number_future,
-               'analysis_race_number_past': int(len(analysis_data_list_past) / len(factor_list_all)),
+               'analysis_race_number_past': summarize_past['analysis_race_number'],
                'analysis_race_number_future': int(len(analysis_data_list_future) / len(factor_list_all)),
                'calculation_duration': time.time() - pre_time}
     return render(request, 'social_analysis/calculate.html', context)
@@ -175,3 +175,26 @@ def count_factor_by_races(race_list):
             factor_counter = analysis.count_factor_only_use(weights)
         save(factor_counter, race)
     return
+
+
+def summarize_past_race_aggregate():
+    """
+    EntireFactorAggregateの過去レースに関して,的中率、使用率、使用回数、的中回数を集計する
+    :return compact: Dictionary
+    """
+    factor_counter_past = analysis.init_factor_counter()
+    factor_list_all = list(Factor.objects.all())
+    analysis_number_past = 0
+    # 過去レースに関する計算結果を取得
+    analysis_data_list_past = list(EntireFactorAggregate.objects.filter(hit__isnull=False))
+    for analysis_data in analysis_data_list_past:
+        factor_counter_past[analysis_data.factor]['use'] += analysis_data.use
+        factor_counter_past[analysis_data.factor]['hit'] += analysis_data.hit
+        analysis_number_past += analysis_data.use
+    # 的中率と使用率を計算
+    factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
+    factor_counter_past = analysis.calculate_use_percentage(factor_counter_past, factor_list_all)
+    compact = {'factor_counter': factor_counter_past,
+               'analysis_number': analysis_number_past,
+               'analysis_race_number': int(len(analysis_data_list_past) / len(factor_list_all))}
+    return compact
