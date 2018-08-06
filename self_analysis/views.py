@@ -48,43 +48,23 @@ def get_hit_wight_list_by_user(user):
     return history_weight_list
 
 
-# 指定ユーザの要素ごとの的中回数をリスト形式で返す [ (factor1, 9), (factor2, 7), ... ]
-def get_hit_factor_rank_by_user(user):
-    factor_list_all = list(Factor.objects.all())
-    history_weight_list = get_hit_wight_list_by_user(user)
-
-    hit_factor_rank = {}
-    # 要素別的中ランキング(重みは用いない、的中回数のみ)の作成
-
-    for factor in factor_list_all:
-        hit_factor_rank[factor] = 0
-
-    for history_weight in history_weight_list:
-        for weight in history_weight:
-            hit_factor_rank[weight.factor] += 1
-
-    # itemsはタプル型オブジェクトを要素とするリストを返す
-    hit_factor_rank = list(hit_factor_rank.items())
-    hit_factor_rank.sort(key=lambda x: -x[1])
-    return hit_factor_rank
-
-
-# 指定ユーザの要素の組み合わせごとの的中回数を辞書形式で返す
-#  [ [5, <factor1,factor2>], [3, <factor6, factor8>], ...]
+# 指定ユーザの要素の組み合わせごと
 def get_hit_factor_combinations_by_user(user):
-    combination_num = 2
+    combination_num = 2 # 組み合わせ数
     hit_history_weight_list = get_hit_wight_list_by_user(user)
 
     # 購入履歴ごとにタプルで区切られたすべての重みリスト [(Weight, Weight), (Weight, Weight, Weight),...]
     history_list_all = list(History.objects.all())
     user_history_list = filter(lambda history: history.user == user, history_list_all)
     user_weight_list = []
+    # 購入履歴ごとに分けられていない重みリストを作成(factor_combination_counterの引数用)
     for history in user_history_list:
         history_weight = get_list_or_404(Weight, history=history)
         user_weight_list.append(history_weight)
 
     factor_combination_counter = analysis.init_factor_combination_counter() # 初期化
 
+    # 要素の組み合わせごとに使用回数を記録する
     for user_weight in user_weight_list:
         history_factor = list(map(lambda weight: weight.factor, user_weight))
         com_list = list(itertools.combinations(history_factor, combination_num))
@@ -93,6 +73,7 @@ def get_hit_factor_combinations_by_user(user):
             key = list(filter(lambda key: set(key) == set(com), factor_combination_counter.keys()))[0]
             factor_combination_counter[key]['use'] += 1
 
+    # 要素の組み合わせごとに使用回数を記録する。
     for history_weight in hit_history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
         hit_history_factor = list(map(lambda weight: weight.factor, history_weight))
         # 1つの的中購入履歴に関して要素の組み合わせを求め、factor_combination_counterをインクリメントしていく
@@ -102,6 +83,7 @@ def get_hit_factor_combinations_by_user(user):
             key = list(filter(lambda key: set(key) == set(history_factor_combination), factor_combination_counter.keys()))[0]
             factor_combination_counter[key]['hit'] += 1
 
+    # 的中率を計算する
     factor_list_all = list(Factor.objects.all())
     factor_combinations_all = itertools.combinations(factor_list_all, combination_num)
     factor_combination_counter = analysis.calculate_hit_percentage(factor_combination_counter, factor_combinations_all)
