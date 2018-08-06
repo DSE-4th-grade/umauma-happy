@@ -14,9 +14,8 @@ def data():
     horse_count = 0  # today_horsesリストのid
     all_horse = range(1, FakeNumber.total_horse, 1)  # 登録されている全馬のidのリスト
     all_jockey = range(1, FakeNumber.total_jockey, 1)  # 登録されている全ジョッキーのidのリスト
-
-    for i in range(FakeNumber.total_races):
-        date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
+    date = fake.date_time_this_decade().strftime("%Y-%m-%d %H:%M:%S")  # created_at & updated_at用
+    for i in range(FakeNumber.total_past_races):
         thistime_jockeys = random.sample(all_jockey, FakeNumber.head_count)  # レース毎のジョッキーリストを作成
         shuffled_int1 = list(range(0, FakeNumber.head_count))  # オッズ選択用にintリストを作成
         random.shuffle(shuffled_int1)  # オッズ選択用にintリストをシャッフル
@@ -45,6 +44,37 @@ def data():
             data_ = cl.OrderedDict()
             data_["model"] = "umauma_happy_app.data"  # 対象のmodelを設定
             data_["pk"] = i * FakeNumber.head_count + j + 1  # PrimaryKeyを設定
+            data_["fields"] = fields  # 格納するフィールドを設定
+            ys.append(data_)  # json書き込み用配列に追加
+            horse_count = horse_count + 1  # today_horsesリストのidを進める
+    for i in range(FakeNumber.total_future_races):
+        thistime_jockeys = random.sample(all_jockey, FakeNumber.head_count)  # レース毎のジョッキーリストを作成
+        shuffled_int1 = list(range(0, FakeNumber.head_count))  # オッズ選択用にintリストを作成
+        random.shuffle(shuffled_int1)  # オッズ選択用にintリストをシャッフル
+        if i % FakeNumber.total_race == 0:  # その日の全レースが終わった時に馬リストをリセット
+            today_horses = random.sample(all_horse, FakeNumber.head_count * FakeNumber.total_race)  # その日行われるレース分の馬リストを作成
+            horse_count = 0  # today_horsesリストのidを初期化
+        for j in range(FakeNumber.head_count):
+            fields = cl.OrderedDict()  # 格納するフィールドを定義
+            fields["horse_id"] = today_horses[horse_count]  # 上で作成した馬リストから重複が起きない様に選択
+            fields["race_id"] = FakeNumber.total_past_races + i + 1
+            fields["jockey_id"] = thistime_jockeys[j]  # 重複のないジョッキーリストから今回のジョッキーを選択
+            fields["sex"] = random.randint(0, 1)
+            fields["handicap"] = random.randint(50, 60)
+            fields["stable_id"] = random.randint(1, FakeNumber.total_stable)
+            fields["trainer_id"] = random.randint(1, FakeNumber.total_trainer)
+            fields["distance_suitability"] = random.randint(1, len(StaticValue.distance_suitability_value))
+            fields["horse_order"] = j + 1
+            fields["leg_quality_id"] = random.randint(1, len(StaticValue.leg_quality_value))
+            fields["odds"] = RandomValue.odds_sample[shuffled_int1[j]]  # odd_sampleからランダムの要素を選択
+            fields["popularity"] = shuffled_int1[j] + 1  # odds_sampleで選んだid
+            # fields["rank"] = None  # 未来のレースなので,rankは指定しない
+            fields["created_at"] = date
+            fields["updated_at"] = date
+            data_ = cl.OrderedDict()
+            data_["model"] = "umauma_happy_app.data"  # 対象のmodelを設定
+            # PrimaryKeyを設定
+            data_["pk"] = (FakeNumber.total_past_races * FakeNumber.head_count) + (i * FakeNumber.head_count) + j + 1
             data_["fields"] = fields  # 格納するフィールドを設定
             ys.append(data_)  # json書き込み用配列に追加
             horse_count = horse_count + 1  # today_horsesリストのidを進める
