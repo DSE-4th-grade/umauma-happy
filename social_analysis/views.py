@@ -10,6 +10,11 @@ class SampleValues:
     analysis_number_samples = [100, 200, 500, 1000, 2000, 5000]
 
 
+class ScheduledSample:
+    start_delta = 0
+    end_delta = 1000
+
+
 def index(request):
     """
     他者分析の分析内容の選択画面
@@ -140,7 +145,7 @@ def save(factor_count, race):
         analysis_data.factor_id = key.id
         analysis_data.race_id = race.id
         analysis_data.save()
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(factor_count)}' + '件のデータをEntireFactorAggregateに保存しました.')
+    print(f'{datetime.datetime.now()} | Complete saving {len(factor_count)} data in EntireFactorAggregate.')
     return
 
 
@@ -155,3 +160,19 @@ def count_factor_by_races(race_list):
         factor_counter = analysis.count_factor(weights)
         save(factor_counter, race)
     return
+
+
+def scheduled_calculate():
+    pre_time = time.time()
+    today = datetime.date.today()
+    start_time = today + datetime.timedelta(days=ScheduledSample.start_delta)
+    end_time = today + datetime.timedelta(days=ScheduledSample.end_delta)
+    race_list = analysis.get_race_by_period(start_time, end_time)
+    print(f'{datetime.datetime.now()} | Start calculate {len(race_list)}Races in {start_time} ~ {end_time}')
+    count_factor_by_races(race_list)
+    print(f'{datetime.datetime.now()} | Complete calculate {len(race_list)}Races in {start_time} ~ {end_time}'
+          f'Run Time : {time.time() - pre_time:.5}s')
+
+
+def scheduled_test():
+    print('test')

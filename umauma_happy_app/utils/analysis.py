@@ -51,15 +51,16 @@ def count_factor(weight_list):
     pre_time = time.time()  # 経過時間表示用
     factor_counter = init_factor_counter()  # 結果を格納する辞書を初期化
     # 要素別使用回数と的中回数を計算
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行います.[開始]')
+    print(f'{datetime.datetime.now()} | [Start]Start calculation hit&use percentage about{len(weight_list)}'
+          + 'data.')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
         if is_hit(weight.history):
             factor_counter[weight.factor]['hit'] += 1
         # if weight.id % 100 == 0:
             # print('{0} | {1}件処理しました.'.format(datetime.datetime.now(), weight.id))
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行いました.処理時間：'
-          + f'{time.time() - pre_time}' + '[完了]')
+    print(f'{datetime.datetime.now()} | [End]Complete calculation hit&use percentage about'
+          f' {len(weight_list)}data Runtime：{time.time() - pre_time}')
     # 的中率を計算
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     return factor_counter
@@ -84,7 +85,7 @@ def get_weight_by_races(race_list):
     :return: List
     """
     # 指定された期間のraceを取得
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
+    print(f'{datetime.datetime.now()} | Get data in {len(race_list)}Races.')
     weight_list = []
     # raceからweightを取得
     for race in race_list:
@@ -101,7 +102,7 @@ def get_weight_by_race(race):
     data_list = {}
     history_list = {}
     weight_list = []
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{race}' + 'についてのデータを取得します.')
+    print(f'{datetime.datetime.now()} | Get data about{race}.'.encode('utf-8'))
     data_list[race] = list(race.data_set.all())
     for data in data_list[race]:
         history_list[data] = list(data.history_set.all())
