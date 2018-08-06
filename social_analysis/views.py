@@ -209,6 +209,13 @@ def summarize_future_race_aggregate():
 
 
 def scheduled_calculate():
+    """
+    バッチ処理の内容[未来のレースについて毎日使用率を計算する]
+    'python manage.py crontab add'を実行すると setting.py で設定した間隔で実行される
+    'python manage.py crontab remove'を実行するとバッチが全解除される
+    'python manage.py crontab show'を実行すると登録されているバッチが確認できる
+    :return:
+    """
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')  # ログ出力の文字コードをセット
     pre_time = time.time()
     today = datetime.date.today()
