@@ -75,13 +75,10 @@ def count_factor(weight_list):
     pre_time = time.time()  # 経過時間表示用
     factor_counter = init_factor_counter()  # 結果を格納する辞書を初期化
     # 要素別使用回数と的中回数を計算
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行います.[開始]')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
         if is_hit(weight.history):
             factor_counter[weight.factor]['hit'] += 1
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行いました.処理時間：'
-          + f'{time.time() - pre_time}' + '[完了]')
     # 的中率,使用率を計算
     factor_counter = calculate_use_percentage(factor_counter, factor_list_all)
     factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
@@ -101,11 +98,8 @@ def count_factor_only_use(weight_list):
     pre_time = time.time()  # 経過時間表示用
     factor_counter = init_factor_counter_only_use()  # 結果を格納する辞書を初期化
     # 要素別使用回数を計算
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数の計算を行います.[開始]')
     for weight in weight_list:
         factor_counter[weight.factor]['use'] += 1
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数の計算を行いました.処理時間：'
-          + f'{time.time() - pre_time}' + '[完了]')
     # 使用率を計算
     factor_counter = calculate_use_percentage(factor_counter, factor_list_all)
     return factor_counter
