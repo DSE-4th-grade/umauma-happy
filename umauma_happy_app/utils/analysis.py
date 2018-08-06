@@ -141,7 +141,7 @@ def get_weight_by_race(race):
     data_list = {}
     history_list = {}
     weight_list = []
-    print(f'{datetime.datetime.now()} | Get data about{race}.'.encode('utf-8'))
+    print(f'{datetime.datetime.now()} | Get data about {race}.')
     data_list[race] = list(race.data_set.all())
     for data in data_list[race]:
         history_list[data] = list(data.history_set.all())

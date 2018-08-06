@@ -4,6 +4,7 @@ from umauma_happy_app.utils import analysis
 from collections import OrderedDict
 import datetime
 import time
+import io, sys
 
 
 class SampleValues:
@@ -208,6 +209,7 @@ def summarize_future_race_aggregate():
 
 
 def scheduled_calculate():
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')  # ログ出力の文字コードをセット
     pre_time = time.time()
     today = datetime.date.today()
     start_time = today + datetime.timedelta(days=ScheduledSample.start_delta)
