@@ -173,8 +173,8 @@ def summarize_past_race_aggregate():
         factor_counter_past[analysis_data.factor]['hit'] += analysis_data.hit
         analysis_number_past += analysis_data.use
     # 的中率と使用率を計算
-    factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
     factor_counter_past = analysis.calculate_use_percentage(factor_counter_past, factor_list_all)
+    factor_counter_past = analysis.calculate_hit_percentage(factor_counter_past, factor_list_all)
     compact = {'factor_counter': factor_counter_past,
                'analysis_number': analysis_number_past,
                'analysis_race_number': int(len(analysis_data_list_past) / len(factor_list_all))}

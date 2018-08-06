@@ -33,8 +33,7 @@ def calculate_hit_percentage(factor_counter, factor_list):
             factor_counter[factor]['hit_percentage'] \
                 = '{:0=6.3f}'.format((factor_counter[factor]['hit'] / factor_counter[factor]['use']) * 100)
     # 結果を的中率, 同点なら使用回数順になるように並び替え
-    factor_counter = OrderedDict(sorted(factor_counter.items(), key=lambda x: x[1]['use'], reverse=True))
-    factor_counter = OrderedDict(sorted(factor_counter.items(), key=lambda x: x[1]['hit_percentage'], reverse=True))
+    factor_counter = OrderedDict(sorted(factor_counter.items(), key=lambda x: (x[1]['hit_percentage'], x[1]['use']), reverse=True))
     return factor_counter
 
 
@@ -84,8 +83,8 @@ def count_factor(weight_list):
     print(f'{datetime.datetime.now()}' + ' | ' + f'{len(weight_list)}' + '件の使用回数と的中回数の計算を行いました.処理時間：'
           + f'{time.time() - pre_time}' + '[完了]')
     # 的中率,使用率を計算
-    factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     factor_counter = calculate_use_percentage(factor_counter, factor_list_all)
+    factor_counter = calculate_hit_percentage(factor_counter, factor_list_all)
     return factor_counter
 
 
