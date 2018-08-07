@@ -10,7 +10,7 @@
 <body>
     <h1>{{ user.name }}の成績</h1>
     <div class="simple">
-        <font size="+2">要素別的中回数</font>
+        <font size="+2">要素別的中成績</font>
     <table border="1">
         <tr>
             <th>注目した要素</th>
@@ -23,13 +23,13 @@
             <td>{{ key }}</td>
             <td>{{ value.use }}</td>
             <td>{{ value.hit }}</td>
-            <td>{{ value.percentage }}</td>
+            <td>{{ value.hit_percentage }}</td>
         </tr>
         {% endfor %}
     </table>
     </div>
     <div class="combination">
-        <font size="+2">要素の組み合わせで見た的中回数</font>
+        <font size="+2">要素の組み合わせで見た的中成績</font>
     <table border="1">
         <tr>
             <th>注目した要素群</th>
@@ -44,7 +44,7 @@
             </td>
             <td>{{ value.use }}</td>
             <td>{{ value.hit }}</td>
-            <td>{{ value.percentage }}</td>
+            <td>{{ value.hit_percentage }}</td>
         </tr>
         {% endfor %}
     </table>
