@@ -73,7 +73,6 @@ def get_hit_factor_combinations_by_user(user):
             key = list(filter(lambda key: set(key) == set(com), factor_combination_counter.keys()))[0]
             factor_combination_counter[key]['use'] += 1
 
-    # 要素の組み合わせごとに使用回数を記録する。
     for history_weight in hit_history_weight_list:  # history_weight = 1つの的中購入履歴に関連する重みタプル
         hit_history_factor = list(map(lambda weight: weight.factor, history_weight))
         # 1つの的中購入履歴に関して要素の組み合わせを求め、factor_combination_counterをインクリメントしていく
