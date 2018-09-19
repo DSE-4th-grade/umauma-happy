@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'umauma_happy_app',
     'self_analysis',
     'social_analysis',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# dead simple crontab powered job scheduling for django (1.8-2.0).
+
+CRONJOBS = [
+    ('*/1 * * * *', 'social_analysis.views.scheduled_calculate', '>> /tmp/scheduled_job.log')
+]

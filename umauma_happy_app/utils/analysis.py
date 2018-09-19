@@ -124,7 +124,7 @@ def get_weight_by_races(race_list):
     :return: List
     """
     # 指定された期間のraceを取得
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(race_list)}' + '件のレースのデータを取得します.')
+    print(f'{datetime.datetime.now()} | Get data in {len(race_list)}Races.')
     weight_list = []
     # raceからweightを取得
     for race in race_list:
@@ -141,7 +141,7 @@ def get_weight_by_race(race):
     data_list = {}
     history_list = {}
     weight_list = []
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{race}' + 'についてのデータを取得します.')
+    print(f'{datetime.datetime.now()} | Get data about {race}.')
     data_list[race] = list(race.data_set.all())
     for data in data_list[race]:
         history_list[data] = list(data.history_set.all())

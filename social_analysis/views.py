@@ -4,10 +4,16 @@ from umauma_happy_app.utils import analysis
 from collections import OrderedDict
 import datetime
 import time
+import io, sys
 
 
 class SampleValues:
     analysis_number_samples = [100, 200, 500, 1000, 2000, 5000]
+
+
+class ScheduledSample:
+    start_delta = 0
+    end_delta = 1000
 
 
 def index(request):
@@ -138,7 +144,7 @@ def save(factor_count, race):
         analysis_data.factor_id = key.id
         analysis_data.race_id = race.id
         analysis_data.save()
-    print(f'{datetime.datetime.now()}' + ' | ' + f'{len(factor_count)}' + '件のデータをEntireFactorAggregateに保存しました.')
+    print(f'{datetime.datetime.now()} | Complete saving {len(factor_count)} data in EntireFactorAggregate.')
     return
 
 
@@ -200,3 +206,23 @@ def summarize_future_race_aggregate():
                'analysis_number': analysis_number_future,
                'analysis_race_number': int(len(analysis_data_list_future) / len(factor_list_all))}
     return compact
+
+
+def scheduled_calculate():
+    """
+    バッチ処理の内容[未来のレースについて毎日使用率を計算する]
+    'python manage.py crontab add'を実行すると setting.py で設定した間隔で実行される
+    'python manage.py crontab remove'を実行するとバッチが全解除される
+    'python manage.py crontab show'を実行すると登録されているバッチが確認できる
+    :return:
+    """
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')  # ログ出力の文字コードをセット
+    pre_time = time.time()
+    today = datetime.date.today()
+    start_time = today + datetime.timedelta(days=ScheduledSample.start_delta)
+    end_time = today + datetime.timedelta(days=ScheduledSample.end_delta)
+    race_list = analysis.get_race_by_period(start_time, end_time)
+    print(f'{datetime.datetime.now()} | Start calculate {len(race_list)}Races in {start_time} ~ {end_time}')
+    count_factor_by_races(race_list)
+    print(f'{datetime.datetime.now()} | Complete calculate {len(race_list)}Races in {start_time} ~ {end_time}'
+          f'Run Time : {time.time() - pre_time:.5}s')
