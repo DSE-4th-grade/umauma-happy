@@ -1,54 +1,67 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <link rel="stylesheet" type="text/css" href="../../static/self_analysis/detail.css">
-</head>
-    <meta charset="UTF-8">
-    <title>detail</title>
-<br>
+{% extends "umauma_happy_app/base.html" %}
 
-<body>
-    <h1>{{ user.name }}の成績</h1>
-    <div class="simple">
-        <font size="+2">要素別的中成績</font>
-    <table border="1">
-        <tr>
-            <th>注目した要素</th>
-            <th>購入回数</th>
-            <th>的中回数</th>
-            <th>的中率</th>
-        </tr>
-        {% for key,value in factor_counter.items %}
-        <tr>
-            <td>{{ key }}</td>
-            <td>{{ value.use }}</td>
-            <td>{{ value.hit }}</td>
-            <td>{{ value.hit_percentage }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12 mt-3">
+        <div class="card" style="width: 100%; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="card-title" style="text-align: center;">
+                    <!-- {{ user.name }}の成績 -->
+                    要素別的中成績
+                </h4>
+                <p class="card-text">
+                    <table class="table" style="width: 100%">
+                        <tr>
+                            <th>要素</th>
+                            <th>購入回数</th>
+                            <th>的中回数</th>
+                            <th>的中率</th>
+                        </tr>
+                        {% for key,value in factor_counter.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value.use }}</td>
+                            <td>{{ value.hit }}</td>
+                            <td>{{ value.hit_percentage }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="combination">
-        <font size="+2">要素の組み合わせで見た的中成績</font>
-    <table border="1">
-        <tr>
-            <th>注目した要素群</th>
-            <th>購入回数</th>
-            <th>的中回数</th>
-            <th>的中率</th>
-        </tr>
-        {% for com, value in factor_combination_counter.items %}
-        <tr>
-            <td>
-                {% for factor in com %}[{{ factor.name }}]{% endfor %}
-            </td>
-            <td>{{ value.use }}</td>
-            <td>{{ value.hit }}</td>
-            <td>{{ value.hit_percentage }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    </div>
-</body>
-</html>
 
+    <div class="col-12 mt-3">
+        <div class="card" style="width: 100%; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="card-title" style="text-align: center;">
+                    要素の組み合わせで見た的中成績
+                </h4>
+                <p class="card-text">
+                    <table class="table">
+                        <tr>
+                            <th>注目した要素群</th>
+                            <th>購入回数</th>
+                            <th>的中回数</th>
+                            <th>的中率</th>
+                        </tr>
+                        {% for com, value in factor_combination_counter.items %}
+                        <tr>
+                            <td>
+                                {% for factor in com %}
+                                    {{ factor.name }}
+                                {% endfor %}
+                            </td>
+                            <td>{{ value.use }}</td>
+                            <td>{{ value.hit }}</td>
+                            <td>{{ value.hit_percentage }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

@@ -1,21 +1,29 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>index</title>
+{% extends "umauma_happy_app/base.html" %}
 
+{% block content %}
+<div class="row mt-5">
     {% if user_list %}
-    <ul>
         {% for user in user_list %}
-        <li><a href="{% url 'self_analysis:detail' user.id %}">{{ user.name }}</a></li>
+        <div class="col-12 col-md-4 mt-3">
+            <div class="card" style="width: 20rem; margin: 0 auto;">
+                <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{% url 'self_analysis:detail' user.id %}">{{ user.name }}</a>
+                </h4>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
     {% else %}
-        <p>No user.</p>
+        <div class="col-12 col-md-4 mt-3">
+            <div class="card" style="width: 20rem; margin: 0 auto;">
+              <div class="card-body">
+                <h4 class="card-title">
+                    No user.
+                </h4>
+              </div>
+            </div>
+        </div>
     {% endif %}
-
-</head>
-<body>
-
-</body>
-</html>
+</div>
+{% endblock content %}

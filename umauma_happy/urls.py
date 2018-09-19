@@ -17,10 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('umauma_happy_app/', include('umauma_happy_app.urls')),
+    path('', include('umauma_happy_app.urls')),
     path('self_analysis/', include('self_analysis.urls')),
     path('social_analysis/', include('social_analysis.urls')),
     path('admin/', admin.site.urls),
 ]
-
-

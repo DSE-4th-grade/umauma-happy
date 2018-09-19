@@ -1,111 +1,106 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>他者分析:結果</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="container">
-            <h1>他者分析モジュール:結果</h1>
-            <div class="row">
-                {% for analysis_number in analysis_number_samples %}
-                    <a class="btn btn-primary mx-1 my-1" href="{% url 'social_analysis:calculate' analysis_number %}">要素数{{ analysis_number }}で試す</a>
-                {% endfor %}
-            </div>
-            <div class="row">
-                <a class="btn btn-danger mx-1 my-1" href="all">全要素で試す</a>
-            </div>
-            <div class="row">
-                <a class="btn btn-success mx-1 my-2" href="/social_analysis/2017-01-01%2000:00:00/2017-12-31%2023:59:59">去年1年間のレースで試す</a>
-                <a class="btn btn-success mx-1 my-2" href="/social_analysis/2019-01-01%2000:00:00/2019-12-31%2023:59:59">来年1年間のレースで試す</a>
-                <a class="btn btn-info mx-1 my-2" href="/social_analysis/remaining">未処理のレースを計算</a>
-                <a class="btn btn-secondary mx-1 my-2" href="/social_analysis/show_all">保存済みのデータを見る</a>
-            </div>
-            {%  if analysis_number is not None %}
-                <h4>使用要素数：{{ analysis_number }}</h4>
-            {% endif %}
-            {%  if analysis_race_number is not None %}
-            <h4>使用レース数：{{ analysis_race_number }}</h4>
-            {% endif %}
-            <h4>計算時間：{{ calculation_duration }}</h4>
-            {% if analysis_start is not None %}
-                <h4>解析期間：{{ analysis_start }} ~ {{ analysis_end }}</h4>
-            {% endif %}
-            {% if factor_count is not None %}
-                <div class="row">
-                    <table class="table">
-                        <tr>
-                            <th>要素名</th>
-                            <th>使用回数</th>
-                            <th>的中回数</th>
-                            <th>的中率</th>
-                        </tr>
-                        {% for key, value in factor_count.items %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value.use }}</td>
-                            <td>{{ value.hit }}</td>
-                            <td>{{ value.hit_percentage }}%</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-            {% if factor_count_past is not None %}
-                <div class="row">
-                    <h4 class="mx-2">実施済のレースの結果</h4>
-                </div>
-                <div class="row">
-                    <h5 class="mx-2">使用要素数：{{ analysis_number_past }}</h5>
-                    <h5 class="mx-2">使用レース数：{{ analysis_race_number_past }}</h5>
-                    <table class="table">
-                        <tr>
-                            <th>要素名</th>
-                            <th>使用回数</th>
-                            <th>的中回数</th>
-                            <th>的中率</th>
-                            <th>使用率</th>
-                        </tr>
-                        {% for key, value in factor_count_past.items %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value.use }}</td>
-                            <td>{{ value.hit }}</td>
-                            <td>{{ value.hit_percentage }}%</td>
-                            <td>{{ value.use_percentage }}%</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
-            {% if factor_count_future is not None %}
-                <div class="row">
-                    <h4 class="mx-2">未実施のレース現段階での使用率</h4>
-                </div>
-                <div class="row">
-                    <h5 class="mx-2">使用要素数：{{ analysis_number_future }}</h5>
-                    <h5 class="mx-2">使用レース数：{{ analysis_race_number_future }}</h5>
-                    <table class="table">
-                        <tr>
-                            <th>要素名</th>
-                            <th>使用回数</th>
-                            <th>使用率</th>
-                        </tr>
-                        {% for key, value in factor_count_future.items %}
-                        <tr>
-                            <td>{{ key }}</td>
-                            <td>{{ value.use }}</td>
-                            <td>{{ value.use_percentage }}%</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            {% endif %}
+{% extends "umauma_happy_app/base.html" %}
 
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{% block content %}
+<div class="mt-5">
+        <h1>他者分析モジュール:結果</h1>
+        <div class="row">
+            {% for analysis_number in analysis_number_samples %}
+                <a class="btn btn-primary mx-1 my-1" href="{% url 'social_analysis:calculate' analysis_number %}">要素数{{ analysis_number }}で試す</a>
+            {% endfor %}
         </div>
-    </body>
-</html>
+        <div class="row">
+            <a class="btn btn-danger mx-1 my-1" href="all">全要素で試す</a>
+        </div>
+        <div class="row">
+            <a class="btn btn-success mx-1 my-2" href="/social_analysis/2017-01-01%2000:00:00/2017-12-31%2023:59:59">去年1年間のレースで試す</a>
+            <a class="btn btn-success mx-1 my-2" href="/social_analysis/2019-01-01%2000:00:00/2019-12-31%2023:59:59">来年1年間のレースで試す</a>
+            <a class="btn btn-info mx-1 my-2" href="/social_analysis/remaining">未処理のレースを計算</a>
+            <a class="btn btn-secondary mx-1 my-2" href="/social_analysis/show_all">保存済みのデータを見る</a>
+        </div>
+        {%  if analysis_number is not None %}
+            <h4>使用要素数：{{ analysis_number }}</h4>
+        {% endif %}
+        {%  if analysis_race_number is not None %}
+        <h4>使用レース数：{{ analysis_race_number }}</h4>
+        {% endif %}
+        <h4>計算時間：{{ calculation_duration }}</h4>
+        {% if analysis_start is not None %}
+            <h4>解析期間：{{ analysis_start }} ~ {{ analysis_end }}</h4>
+        {% endif %}
+        {% if factor_count is not None %}
+            <div class="row">
+                <table class="table">
+                    <tr>
+                        <th>要素名</th>
+                        <th>使用回数</th>
+                        <th>的中回数</th>
+                        <th>的中率</th>
+                    </tr>
+                    {% for key, value in factor_count.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value.use }}</td>
+                        <td>{{ value.hit }}</td>
+                        <td>{{ value.hit_percentage }}%</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        {% if factor_count_past is not None %}
+            <div class="row">
+                <h4 class="mx-2">実施済のレースの結果</h4>
+            </div>
+            <div class="row">
+                <h5 class="mx-2">使用要素数：{{ analysis_number_past }}</h5>
+                <h5 class="mx-2">使用レース数：{{ analysis_race_number_past }}</h5>
+                <table class="table">
+                    <tr>
+                        <th>要素名</th>
+                        <th>使用回数</th>
+                        <th>的中回数</th>
+                        <th>的中率</th>
+                        <th>使用率</th>
+                    </tr>
+                    {% for key, value in factor_count_past.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value.use }}</td>
+                        <td>{{ value.hit }}</td>
+                        <td>{{ value.hit_percentage }}%</td>
+                        <td>{{ value.use_percentage }}%</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+        {% if factor_count_future is not None %}
+            <div class="row">
+                <h4 class="mx-2">未実施のレース現段階での使用率</h4>
+            </div>
+            <div class="row">
+                <h5 class="mx-2">使用要素数：{{ analysis_number_future }}</h5>
+                <h5 class="mx-2">使用レース数：{{ analysis_race_number_future }}</h5>
+                <table class="table">
+                    <tr>
+                        <th>要素名</th>
+                        <th>使用回数</th>
+                        <th>使用率</th>
+                    </tr>
+                    {% for key, value in factor_count_future.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value.use }}</td>
+                        <td>{{ value.use_percentage }}%</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </div>
+</div>
+{% endblock content %}

@@ -7,16 +7,20 @@
     </div>
 </div>
 <div class="row">
-  <div class="col-12">
     {% if race_list %}
-    <ul>
       {% for race in race_list %}
-        <li><a href="{% url 'umauma_happy_app:purchase' race.id %}">{{ race.name }}</a></li>
+        <div class="col-12 col-md-4 mt-3">
+          <div class="card" style="width: 20rem; margin: 0 auto;">
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'umauma_happy_app:purchase' race.id %}">{{ race.name }}
+              </h4>
+            </div>
+          </div>
+        </div>
       {% endfor %}
-    </ul>
     {% else %}
       <p>No race.</p>
     {% endif %}
-  </div>
 </div>
 {% endblock content %}

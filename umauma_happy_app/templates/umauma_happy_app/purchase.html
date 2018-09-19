@@ -45,10 +45,11 @@
   </table>
 </div>
 <div class="row mt-3">
-  <form action="{% url 'umauma_happy_app:purchase_do' %}" method="post">
+  <div class="card">
+  <form action="{% url 'umauma_happy_app:purchase_do' %}" method="post" style="width: 100%;">
     {% csrf_token %}
     <input type="hidden" name="data_list" value="{{ data_list }}"/>
-    <div class="form-group">
+    <div class="form-group" style="margin: 10px;">
       <label for="horse">馬</label>
       <select name="data" class="form-control" id="horse">
         {% for data in data_list %}
@@ -56,16 +57,18 @@
         {% endfor %}
       </select>
     </div>
+    <div class="row" style="margin: 10px;">
     {% for key, value in factor_dict.items %}
-      <div class="form-group">
+      <div class="col-1">
         <label for="{{ key }}">{{ value }}</label>
-        <!-- <input name="{{ key }}" type="number" class="form-control" id="{{ key }}"> -->
         <input name="{{ key }}" type="range" min="0" max="5" step="1" value="0" class="form-control-range" id="{{ key }}">
       </div>
     {% endfor %}
+    </div>
     <div class="text-center">
-      <button class="btn btn-primary" type="submit">送信</button>
+      <button class="btn btn-primary" type="submit">購入</button>
     </div>
   </form>
+  </div>
 </div>
 {% endblock content %}
